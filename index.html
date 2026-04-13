@@ -822,7 +822,7 @@
             };
         });
         
-        // New getPrintHtml that exactly matches Estimate system PDF output structure
+        // REFINED getPrintHtml – Standard Company Letterhead (no TO box, no bank details, no signature line)
         function getPrintHtml() {
             // Capture current letterhead data
             const company = fields.companyName.value.trim() || defaultData.companyName;
@@ -838,9 +838,8 @@
             const letterBodyHtml = fields.letterBody.value.trim() ? fields.letterBody.value.trim().replace(/\n/g,'<br>') : defaultData.letterBody.replace(/\n/g,'<br>');
             const footerNoteVal = fields.footerNote.value.trim() || defaultData.footerNote;
             const logoUrlFinal = fields.logoUrl.value.trim() || "34391.png";
-            const currentDate = new Date().toLocaleDateString('en-GB');
             
-            // Build HTML that exactly replicates Estimate system's PDF output layout, spacing, and structure
+            // Build clean, standard letterhead HTML (no extra boxes, no bank details, no signature line)
             return `<!DOCTYPE html>
             <html>
             <head>
@@ -862,12 +861,9 @@
                         line-height: 1.5;
                         color: #2b2b2b;
                     }
-                    .estimate-preview-container {
+                    .letterhead-container {
                         max-width: 100%;
                         background: white;
-                        border-radius: 12px;
-                        box-shadow: 0 8px 24px rgba(0,0,0,0.05);
-                        padding: 28px;
                         position: relative;
                         overflow: hidden;
                     }
@@ -886,15 +882,15 @@
                         filter: grayscale(100%);
                         background-image: url('${logoUrlFinal}');
                     }
-                    .estimate-header-preview {
+                    .letterhead-header {
+                        border-bottom: 2px solid #1f3d2b;
+                        padding-bottom: 20px;
+                        margin-bottom: 24px;
                         display: flex;
+                        flex-wrap: wrap;
                         justify-content: space-between;
                         align-items: flex-start;
-                        flex-wrap: wrap;
-                        gap: 16px;
-                        margin-bottom: 24px;
-                        padding-bottom: 12px;
-                        border-bottom: 2px solid #1f3d2b;
+                        gap: 20px;
                     }
                     .header-left {
                         display: flex;
@@ -921,68 +917,45 @@
                         font-size: 12px;
                         color: #6f7b74;
                     }
-                    .estimate-meta {
+                    .header-right {
                         text-align: right;
-                        font-size: 11px;
+                        font-size: 12px;
                         color: #5a5a5a;
+                        line-height: 1.4;
                     }
-                    .addresses-preview {
-                        display: flex;
-                        gap: 16px;
-                        margin-bottom: 24px;
-                        flex-wrap: wrap;
+                    .address-block {
+                        margin-top: 8px;
+                        font-size: 12px;
+                        line-height: 1.4;
+                        color: #5a5a5a;
+                        text-align: right;
                     }
-                    .address-box {
-                        flex: 1;
-                        background: #f6f4ef;
-                        padding: 14px;
-                        border-radius: 12px;
-                        border-left: 4px solid #1f3d2b;
-                    }
-                    .address-title {
-                        font-weight: 700;
+                    .gst-pan {
+                        font-weight: 600;
                         color: #1f3d2b;
-                        margin-bottom: 8px;
-                        font-size: 14px;
+                        font-size: 11px;
+                        margin-top: 4px;
                     }
-                    .letter-content {
+                    .letter-body {
                         margin: 28px 0;
-                        background: white;
-                        padding: 8px 0;
                         font-size: 14px;
                         line-height: 1.6;
+                        color: #2b2b2b;
                     }
-                    .authorization {
+                    .letter-footer {
                         margin-top: 32px;
-                        display: flex;
-                        justify-content: space-between;
-                        flex-wrap: wrap;
-                        gap: 16px;
+                        padding-top: 16px;
                         border-top: 1px solid #e0e0e0;
-                        padding-top: 20px;
-                    }
-                    .signature {
-                        text-align: center;
-                    }
-                    .signature-line {
-                        width: 160px;
-                        border-bottom: 1.5px solid #1f3d2b;
-                        margin: 0 auto 6px;
-                        padding-top: 30px;
-                    }
-                    .footer-note {
-                        text-align: center;
-                        margin-top: 24px;
                         font-size: 10px;
                         color: #6f7b74;
+                        text-align: center;
                     }
                     @media print {
                         body {
                             margin: 0;
                             padding: 0;
                         }
-                        .estimate-preview-container {
-                            box-shadow: none;
+                        .letterhead-container {
                             padding: 0.5cm;
                         }
                         .watermark-print {
@@ -992,9 +965,9 @@
                 </style>
             </head>
             <body>
-            <div class="estimate-preview-container">
+            <div class="letterhead-container">
                 <div class="watermark-print"></div>
-                <div class="estimate-header-preview">
+                <div class="letterhead-header">
                     <div class="header-left">
                         <img src="${logoUrlFinal}" class="preview-logo-print" alt="Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2248%22 fill=%22%231f3d2b%22/%3E%3Ctext x=%2250%22 y=%2267%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2242%22 font-family=%22Arial%22%3EHC%3C/text%3E%3C/svg%3E'">
                         <div>
@@ -1002,40 +975,18 @@
                             <div class="company-tagline">${escapeHtml(tagline)}</div>
                         </div>
                     </div>
-                    <div class="estimate-meta">
-                        <p><strong>LETTERHEAD</strong> | Official Communication</p>
-                        <p>Date: ${currentDate}</p>
-                    </div>
-                </div>
-                <div class="addresses-preview">
-                    <div class="address-box">
-                        <div class="address-title">FROM (REGISTERED OFFICE)</div>
+                    <div class="header-right">
                         <div>${escapeHtml(addr1)}<br>${escapeHtml(addr2)}<br>${escapeHtml(city)}</div>
-                        <div style="margin-top:8px;"><strong>GSTIN:</strong> ${escapeHtml(gst)}<br><strong>PAN:</strong> ${escapeHtml(panNum)}</div>
-                        <div style="margin-top:6px;"><i class="fas fa-phone"></i> ${escapeHtml(phoneVal)}<br><i class="fas fa-envelope"></i> ${escapeHtml(emailVal)}<br><i class="fas fa-globe"></i> ${escapeHtml(websiteVal)}</div>
-                    </div>
-                    <div class="address-box">
-                        <div class="address-title">TO (RECIPIENT)</div>
-                        <div>_________________________<br>_________________________<br>_________________________</div>
+                        <div class="gst-pan">GSTIN: ${escapeHtml(gst)} | PAN: ${escapeHtml(panNum)}</div>
+                        <div><i class="fas fa-phone"></i> ${escapeHtml(phoneVal)} &nbsp;|&nbsp; <i class="fas fa-envelope"></i> ${escapeHtml(emailVal)}<br><i class="fas fa-globe"></i> ${escapeHtml(websiteVal)}</div>
                     </div>
                 </div>
-                <div class="letter-content">
+                <div class="letter-body">
                     ${letterBodyHtml}
                 </div>
-                <div class="authorization">
-                    <div>
-                        <p><strong>Bank Details:</strong> HALDER & CO, A/C: 50200119707544, IFSC: HDFC0008949, Branch: BOW BAZAR</p>
-                        <p><strong>State Code:</strong> 19 (West Bengal) | <strong>Jurisdiction:</strong> Kolkata</p>
-                        <p><strong>Footer Note:</strong> ${escapeHtml(footerNoteVal)}</p>
-                    </div>
-                    <div class="signature">
-                        <div class="signature-line"></div>
-                        <div><strong>Authorised Signatory</strong></div>
-                        <div>Halder & Co.</div>
-                    </div>
-                </div>
-                <div class="footer-note">
-                    This is a computer generated letterhead – valid without signature | Subject to Kolkata jurisdiction
+                <div class="letter-footer">
+                    ${escapeHtml(footerNoteVal)}<br>
+                    <span style="font-size:9px;">Computer Generated Document | Subject to Kolkata jurisdiction</span>
                 </div>
             </div>
             </body>
@@ -1055,7 +1006,7 @@
         async function generatePDF() {
             const confirmBtn = document.getElementById('confirmExportBtn');
             confirmBtn.disabled = true;
-            showToast('Generating PDF (Estimate system format)...', 'info');
+            showToast('Generating standard letterhead PDF...', 'info');
             try {
                 const html = getPrintHtml();
                 const tempDiv = document.createElement('div');
@@ -1067,7 +1018,7 @@
                 tempDiv.innerHTML = html;
                 document.body.appendChild(tempDiv);
                 await new Promise(r => setTimeout(r, 500));
-                const target = tempDiv.querySelector('.estimate-preview-container');
+                const target = tempDiv.querySelector('.letterhead-container');
                 if(!target) throw new Error('Preview container missing');
                 const canvas = await html2canvas(target, { scale: 2.5, useCORS: true, backgroundColor: '#ffffff', logging: false });
                 document.body.removeChild(tempDiv);
@@ -1076,10 +1027,10 @@
                 const imgWidth = 210;
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
                 pdf.addImage(canvas, 'PNG', 0, 0, imgWidth, imgHeight);
-                pdf.save(`Halder_Letterhead_EstimateFormat.pdf`);
+                pdf.save(`Halder_Letterhead_Standard.pdf`);
                 confirmBtn.disabled = false;
                 exportModal.classList.remove('active');
-                showToast('PDF downloaded (Estimate system layout)');
+                showToast('PDF downloaded (standard letterhead)');
             } catch(err) {
                 console.error(err);
                 confirmBtn.disabled = false;
@@ -1120,7 +1071,7 @@
             }
         }
         updatePreview();
-        setTimeout(() => showToast('Letterhead System Ready | PDF matches Estimate system format', 'info'), 800);
+        setTimeout(() => showToast('Letterhead System Ready | Export uses standard company letterhead format', 'info'), 800);
     });
 </script>
 </body>
