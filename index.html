@@ -41,12 +41,8 @@
             flex-direction: column;
         }
 
-        @media (min-width: 640px) {
-            body { padding: 16px; }
-        }
-        @media (min-width: 1024px) {
-            body { padding: 24px; }
-        }
+        @media (min-width: 640px) { body { padding: 16px; } }
+        @media (min-width: 1024px) { body { padding: 24px; } }
 
         .container {
             max-width: 1440px;
@@ -57,7 +53,7 @@
             flex: 1;
         }
 
-        /* Header Bar (same as invoice system) */
+        /* Header Bar */
         .letterhead-header-bar {
             background: var(--primary);
             border-radius: var(--radius);
@@ -70,79 +66,32 @@
             gap: 16px;
             color: white;
         }
-
         @media (max-width: 768px) {
-            .letterhead-header-bar {
-                flex-direction: column;
-                text-align: center;
-            }
-            .logo-area {
-                justify-content: center;
-                flex-direction: column;
-                text-align: center;
-            }
-            .controls {
-                justify-content: center;
-                width: 100%;
-            }
+            .letterhead-header-bar { flex-direction: column; text-align: center; padding: 16px; }
+            .logo-area { justify-content: center; flex-direction: column; text-align: center; }
+            .controls { justify-content: center; width: 100%; }
         }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
+        .logo-area { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
         .circular-logo {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid white;
-            background: white;
-            padding: 3px;
+            width: 50px; height: 50px; border-radius: 50%; object-fit: cover;
+            border: 2px solid white; background: white; padding: 3px;
+            transition: transform 0.3s ease;
         }
-        @media (min-width: 768px) {
-            .circular-logo { width: 60px; height: 60px; }
-        }
-
+        @media (min-width: 768px) { .circular-logo { width: 60px; height: 60px; } }
+        .circular-logo:hover { transform: scale(1.02); }
         .company-details h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 24px;
-            color: white;
-            font-weight: 700;
+            font-size: 24px; color: white; letter-spacing: 1px; font-weight: 700; margin-bottom: 4px;
         }
-        @media (min-width: 768px) {
-            .company-details h1 { font-size: 28px; }
-        }
-
-        .company-details p {
-            color: rgba(255,255,255,0.85);
-            font-size: 12px;
-        }
-
-        .controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+        @media (min-width: 768px) { .company-details h1 { font-size: 28px; } }
+        .company-details p { color: rgba(255,255,255,0.85); font-size: 12px; }
+        .controls { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn {
-            padding: 8px 14px;
-            border: none;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 12px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: var(--transition);
-            font-family: inherit;
-            background: white;
-            color: var(--primary);
-            white-space: nowrap;
+            padding: 8px 14px; border: none; border-radius: 40px; font-weight: 600; font-size: 12px;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: var(--transition);
+            font-family: inherit; background: white; color: var(--primary); white-space: nowrap;
         }
+        @media (max-width: 480px) { .btn { padding: 6px 12px; font-size: 11px; white-space: normal; } }
         .btn-primary { background: white; color: var(--primary); }
         .btn-primary:hover { background: #e9ecef; transform: translateY(-2px); }
         .btn-secondary { background: #e9ecef; color: var(--primary); }
@@ -152,315 +101,127 @@
         .btn-save { background: #1e7e34; color: white; }
         .btn-save:hover { background: #155d27; transform: translateY(-2px); }
 
-        /* Two-column layout */
-        .letterhead-layout {
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-        }
-        @media (max-width: 992px) {
-            .letterhead-layout { flex-direction: column; }
-        }
-
+        /* Layout */
+        .letterhead-layout { display: flex; flex-direction: row; gap: 20px; }
+        @media (max-width: 992px) { .letterhead-layout { flex-direction: column; } }
         .editor-panel {
-            flex: 1;
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 20px;
-            box-shadow: var(--shadow-sm);
-            height: fit-content;
+            flex: 1; background: var(--card); border-radius: var(--radius); padding: 20px;
+            box-shadow: var(--shadow-sm); height: fit-content;
         }
-        @media (min-width: 768px) {
-            .editor-panel { padding: 24px; }
-        }
-
+        @media (min-width: 768px) { .editor-panel { padding: 24px; } }
         .preview-panel {
-            flex: 2;
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 20px;
-            box-shadow: var(--shadow-sm);
-            position: relative;
-            overflow: hidden;
+            flex: 2; background: var(--card); border-radius: var(--radius); padding: 20px;
+            box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
         }
-        @media (min-width: 768px) {
-            .preview-panel { padding: 28px; }
-        }
+        @media (min-width: 768px) { .preview-panel { padding: 28px; } }
 
-        /* Letterhead Preview Core Styles */
+        /* Letterhead Preview Styles */
         .letterhead-preview {
-            background: white;
-            border-radius: 4px;
-            font-family: 'Source Sans 3', sans-serif;
-            max-width: 100%;
-            margin: 0 auto;
-            position: relative;
+            background: white; border-radius: 4px; font-family: 'Source Sans 3', sans-serif;
+            max-width: 100%; margin: 0 auto; position: relative;
         }
-
         .letterhead-header {
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 20px;
-            margin-bottom: 24px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
+            border-bottom: 2px solid var(--primary); padding-bottom: 20px; margin-bottom: 24px;
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px;
         }
-        .letterhead-logo-area {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-        .preview-logo {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1px solid var(--border);
-        }
-        .letterhead-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        .letterhead-tagline {
-            font-size: 12px;
-            color: var(--muted);
-        }
-        .letterhead-address-block {
-            text-align: right;
-            font-size: 12px;
-            line-height: 1.4;
-            color: var(--text-medium);
-        }
-        .gst-pan-line {
-            font-weight: 600;
-            color: var(--primary);
-            font-size: 11px;
-        }
-        .letterhead-body {
-            min-height: 280px;
-            margin: 28px 0;
-            font-size: 14px;
-            line-height: 1.6;
-            color: var(--text-dark);
-        }
-        .letterhead-body-content {
-            white-space: pre-wrap;
-        }
+        .letterhead-logo-area { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .preview-logo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
+        .letterhead-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; color: var(--primary); letter-spacing: 1px; margin-bottom: 6px; }
+        .letterhead-tagline { font-size: 12px; color: var(--muted); font-weight: 500; }
+        .letterhead-address-block { text-align: right; font-size: 12px; line-height: 1.4; color: var(--text-medium); }
+        .letterhead-address-block p { margin: 2px 0; }
+        .gst-pan-line { font-weight: 600; color: var(--primary); font-size: 11px; }
+        .letterhead-body { min-height: 280px; margin: 28px 0; font-size: 14px; line-height: 1.6; color: var(--text-dark); }
+        .letterhead-body-content { font-family: inherit; }
+        .optional-field { margin: 12px 0; padding: 8px 0; border-bottom: 1px dashed var(--border); }
+        .optional-field strong { color: var(--primary); }
         .letterhead-footer {
-            margin-top: 32px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
-            font-size: 10px;
-            color: var(--muted);
-            text-align: center;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 12px;
+            margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border);
+            font-size: 10px; color: var(--muted); text-align: center; display: flex; flex-wrap: wrap;
+            justify-content: space-between; gap: 12px;
         }
-        /* Dynamic Text Watermark */
+        .watermark-light {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-25deg);
+            opacity: 0.05; pointer-events: none; width: 250px; height: 250px;
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+            filter: grayscale(100%);
+        }
+        @media (min-width: 768px) { .watermark-light { width: 350px; height: 350px; } }
+        /* Secondary Text Watermark */
         .text-watermark {
-            position: absolute;
-            pointer-events: none;
+            position: absolute; pointer-events: none; white-space: nowrap;
+            font-family: 'Cormorant Garamond', serif; font-weight: bold;
             z-index: 1;
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 700;
-            white-space: nowrap;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: rgba(0,0,0,0.05);
         }
-
-        /* Form Styles */
         .panel-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 22px;
-            color: var(--primary);
-            margin-bottom: 18px;
-            padding-bottom: 6px;
-            border-bottom: 2px solid var(--primary);
-            display: inline-block;
+            font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--primary);
+            margin-bottom: 18px; padding-bottom: 6px; border-bottom: 2px solid var(--primary); display: inline-block;
         }
-        .form-group {
-            margin-bottom: 16px;
-        }
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: var(--primary);
-            font-size: 13px;
-        }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; color: var(--primary); font-size: 13px; }
         input, select, textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            font-family: inherit;
-            font-size: 14px;
-            transition: var(--transition);
-            background: #fefefe;
+            width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px;
+            font-family: inherit; font-size: 14px; transition: var(--transition); background: #fefefe;
         }
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(31,61,43,0.1);
-        }
-        .row {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-        .row .form-group {
-            flex: 1;
-            min-width: 120px;
-        }
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        .checkbox-group label {
-            margin-bottom: 0;
-            cursor: pointer;
-        }
-        hr {
-            margin: 20px 0;
-            border-color: var(--border);
-        }
+        input:focus, select:focus, textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(31,61,43,0.1); }
+        .row { display: flex; gap: 14px; flex-wrap: wrap; }
+        .row .form-group { flex: 1; min-width: 120px; }
+        .checkbox-group { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .checkbox-group label { margin-bottom: 0; cursor: pointer; }
 
         /* Rich Text Toolbar */
         .rich-text-toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 12px;
-            padding: 8px 10px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            border: 1px solid var(--border);
+            display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;
+            padding: 8px 10px; background: #f8f9fa; border-radius: 12px; border: 1px solid var(--border);
         }
         .toolbar-btn {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 6px 12px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: var(--transition);
-            color: var(--text-dark);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            background: white; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px;
+            font-size: 14px; cursor: pointer; transition: var(--transition); color: var(--text-dark);
+            display: inline-flex; align-items: center; gap: 6px; font-family: inherit; font-weight: 500;
         }
-        .toolbar-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        .char-counter {
-            font-size: 11px;
-            color: var(--muted);
-            text-align: right;
-            margin-top: 6px;
-        }
+        .toolbar-btn i { font-size: 14px; }
+        .toolbar-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .toolbar-divider { width: 1px; background: var(--border); margin: 0 4px; }
+        .char-counter { font-size: 11px; color: var(--muted); text-align: right; margin-top: 6px; }
 
-        /* Modals & Toasts (same as invoice) */
+        /* Modal & Toast (same as invoice) */
         .modal-overlay {
-            position: fixed;
-            top:0; left:0; right:0; bottom:0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity:0;
-            visibility: hidden;
-            transition: 0.2s;
-            padding: 16px;
+            position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
+            z-index: 1000; opacity:0; visibility: hidden; transition: 0.2s; padding: 16px;
         }
         .modal-overlay.active { opacity:1; visibility: visible; }
         .export-modal {
-            background: white;
-            border-radius: 20px;
-            max-width: 500px;
-            width: 100%;
-            padding: 20px;
+            background: white; border-radius: 20px; max-width: 500px; width: 100%; padding: 20px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
-        .export-options {
-            display: flex;
-            gap: 12px;
-            margin: 16px 0;
-            flex-wrap: wrap;
-        }
+        .modal-header { display: flex; justify-content: space-between; margin-bottom: 16px; align-items: center; }
+        .export-options { display: flex; gap: 12px; margin: 16px 0; flex-wrap: wrap; }
         .export-option {
-            flex: 1;
-            background: var(--bg);
-            border-radius: 16px;
-            padding: 16px;
-            text-align: center;
-            cursor: pointer;
-            border: 2px solid transparent;
+            flex: 1; background: var(--bg); border-radius: 16px; padding: 16px; text-align: center;
+            cursor: pointer; border: 2px solid transparent; transition: 0.2s;
         }
-        .export-option.active {
-            border-color: var(--primary);
-            background: white;
-        }
+        .export-option.active { border-color: var(--primary); background: white; }
         .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            left: 20px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            padding: 12px 16px;
-            display: flex;
-            gap: 12px;
-            z-index: 1100;
-            transform: translateY(100px);
-            transition: 0.3s;
-            max-width: calc(100% - 40px);
+            position: fixed; bottom: 20px; right: 20px; left: 20px; background: white; border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15); padding: 12px 16px; display: flex; gap: 12px;
+            z-index: 1100; transform: translateY(100px); transition: 0.3s; max-width: calc(100% - 40px);
+            margin: 0 auto;
         }
-        @media (min-width: 640px) {
-            .toast { left: auto; right: 24px; max-width: 350px; }
-        }
+        @media (min-width: 640px) { .toast { left: auto; right: 24px; max-width: 350px; } }
         .toast.show { transform: translateY(0); }
         .page-footer {
-            background: var(--primary);
-            color: white;
-            text-align: center;
-            padding: 16px;
-            margin-top: 32px;
-            border-radius: var(--radius);
-            font-size: 12px;
+            background: var(--primary); color: white; text-align: center; padding: 16px;
+            margin-top: 32px; border-radius: var(--radius); font-size: 12px;
         }
         @media print {
-            .editor-panel, .controls, .modal-overlay, .toast, .no-print, .page-footer, .letterhead-header-bar {
-                display: none !important;
-            }
-            .preview-panel {
-                margin: 0;
-                padding: 0;
-                box-shadow: none;
-                background: white;
-            }
-            body {
-                background: white;
-                padding: 0;
-                margin: 0;
-            }
-            .text-watermark {
-                opacity: 0.08 !important;
-            }
+            .editor-panel, .controls, .modal-overlay, .toast, .no-print, .letterhead-header-bar, .page-footer { display: none !important; }
+            .preview-panel { margin: 0; padding: 0; box-shadow: none; background: white; }
+            body { background: white; padding: 0; margin: 0; }
+            .container { max-width: 100%; margin: 0; }
+            .letterhead-preview { margin: 0; padding: 0.5cm; }
+            .watermark-light { opacity: 0.1; }
+            .text-watermark { opacity: 0.2 !important; }
         }
     </style>
 </head>
@@ -468,7 +229,7 @@
 <div class="container">
     <div class="letterhead-header-bar no-print">
         <div class="logo-area">
-            <img src="34391.png" alt="Logo" class="circular-logo" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2248%22%20fill%3D%22%231f3d2b%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2265%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%20font-family%3D%22Arial%22%3EHC%3C%2Ftext%3E%3C%2Fsvg%3E'">
+            <img src="34391.png" alt="Halder & Co. Logo" class="circular-logo" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2248%22%20fill%3D%22%231f3d2b%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2265%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%20font-family%3D%22Arial%22%3EHC%3C%2Ftext%3E%3C%2Fsvg%3E'">
             <div class="company-details">
                 <h1>HALDER & CO.</h1>
                 <p>Premium Letterhead Studio | Corporate Stationery</p>
@@ -483,7 +244,7 @@
     </div>
 
     <div class="letterhead-layout">
-        <!-- EDITOR PANEL (enhanced) -->
+        <!-- EDITOR PANEL -->
         <div class="editor-panel no-print">
             <h2 class="panel-title">Letterhead Configuration</h2>
             <div class="form-group">
@@ -514,38 +275,32 @@
                 <div class="form-group"><label>Email</label><input type="email" id="email"></div>
                 <div class="form-group"><label>Website</label><input type="text" id="website"></div>
             </div>
-
-            <!-- ========== TOGGLEABLE OPTIONAL FIELDS ========== -->
-            <hr>
-            <h3 class="panel-title" style="font-size: 18px;">Optional Fields</h3>
-            <div class="checkbox-group">
-                <input type="checkbox" id="showRefNo" checked> <label for="showRefNo">Show Reference Number</label>
-                <input type="text" id="refNo" placeholder="e.g., HAL/REF/001" style="width: auto; flex:1; margin-left:10px;">
-            </div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="showSubject" checked> <label for="showSubject">Show Subject Line</label>
-                <input type="text" id="subjectLine" placeholder="Subject: ..." style="width: auto; flex:1; margin-left:10px;">
-            </div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="showContactDetails"> <label for="showContactDetails">Show Additional Contact Details</label>
-            </div>
-            <div id="additionalContactFields" style="margin-left: 28px; margin-bottom: 12px;">
-                <input type="text" id="contactPhone2" placeholder="Alternate Phone" class="form-group">
-                <input type="text" id="contactEmail2" placeholder="Alternate Email" class="form-group">
-            </div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="showDisclaimer"> <label for="showDisclaimer">Show Footer Disclaimer</label>
-                <input type="text" id="disclaimerText" placeholder="Disclaimer text" style="width: auto; flex:1; margin-left:10px;" value="This is a system generated letterhead, no signature required.">
-            </div>
-
-            <!-- ========== PREMIUM LETTER BODY WITH RICH TEXT & PLACEHOLDERS ========== -->
+            
+            <!-- Optional Fields Section (toggleable) -->
             <div class="form-group">
-                <label>Letter Body / Message Content <span style="font-weight:normal;">(Rich text + placeholders)</span></label>
+                <label style="display:flex; align-items:center; gap:10px;">
+                    <input type="checkbox" id="toggleOptionalFields" checked> Show Optional Fields
+                </label>
+                <div id="optionalFieldsContainer">
+                    <div class="checkbox-group"><input type="checkbox" id="showSubject" checked> <label>Subject Line</label></div>
+                    <div class="form-group" id="subjectGroup"><input type="text" id="subjectLine" placeholder="Subject"></div>
+                    <div class="checkbox-group"><input type="checkbox" id="showReference" checked> <label>Reference No.</label></div>
+                    <div class="form-group" id="refGroup"><input type="text" id="referenceNo" placeholder="Ref: ..."></div>
+                    <div class="checkbox-group"><input type="checkbox" id="showAttachments"> <label>Attachments Note</label></div>
+                    <div class="form-group" id="attachmentsGroup"><input type="text" id="attachments" placeholder="e.g., Enclosures: Brochure, Price List"></div>
+                    <div class="checkbox-group"><input type="checkbox" id="showAttention"> <label>Attention Line</label></div>
+                    <div class="form-group" id="attentionGroup"><input type="text" id="attention" placeholder="Attention: ..."></div>
+                </div>
+            </div>
+
+            <!-- Enhanced Letter Body -->
+            <div class="form-group">
+                <label>Letter Body / Message Content <span style="font-weight:normal; font-size:12px;">(Rich text supported)</span></label>
                 <div class="rich-text-toolbar">
                     <button type="button" class="toolbar-btn" data-format="bold" title="Bold"><i class="fas fa-bold"></i></button>
                     <button type="button" class="toolbar-btn" data-format="italic" title="Italic"><i class="fas fa-italic"></i></button>
                     <button type="button" class="toolbar-btn" data-format="underline" title="Underline"><i class="fas fa-underline"></i></button>
-                    <span class="toolbar-divider" style="width:1px; background:#ccc; margin:0 4px;"></span>
+                    <span class="toolbar-divider"></span>
                     <button type="button" class="toolbar-btn" data-format="h3" title="Heading"><i class="fas fa-heading"></i> H3</button>
                     <button type="button" class="toolbar-btn" data-format="p" title="Paragraph"><i class="fas fa-paragraph"></i> P</button>
                     <span class="toolbar-divider"></span>
@@ -557,40 +312,33 @@
                     <button type="button" class="toolbar-btn" data-format="alignRight" title="Align Right"><i class="fas fa-align-right"></i></button>
                     <span class="toolbar-divider"></span>
                     <button type="button" class="toolbar-btn" id="clearFormattingBtn" title="Clear Formatting"><i class="fas fa-eraser"></i></button>
-                    <span class="toolbar-divider"></span>
-                    <button type="button" class="toolbar-btn" id="insertDatePlaceholder" title="Insert Date"><i class="fas fa-calendar"></i> {date}</button>
-                    <button type="button" class="toolbar-btn" id="insertRecipientPlaceholder" title="Insert Recipient"><i class="fas fa-user"></i> {recipient}</button>
-                    <button type="button" class="toolbar-btn" id="insertCompanyPlaceholder" title="Insert Company"><i class="fas fa-building"></i> {company}</button>
                 </div>
-                <textarea id="letterBody" rows="8" placeholder="Compose your letter here..."></textarea>
+                <textarea id="letterBody" rows="8" placeholder="Compose your letter content here... Use the toolbar to add formatting (HTML supported)."></textarea>
                 <div class="char-counter" id="letterBodyCounter">0 characters</div>
             </div>
-
+            
             <div class="form-group">
                 <label>Footer Note (optional)</label>
-                <input type="text" id="footerNote" placeholder="e.g., Regd. Office address">
+                <input type="text" id="footerNote" placeholder="e.g., Regd. Office & Corporate communication">
             </div>
 
-            <!-- ========== WATERMARK SETTINGS ========== -->
-            <hr>
-            <h3 class="panel-title" style="font-size: 18px;">Watermark Settings</h3>
+            <!-- Secondary Text Watermark Settings -->
             <div class="form-group">
-                <label>Watermark Text</label>
-                <input type="text" id="watermarkText" value="HALDER & CO.">
-            </div>
-            <div class="row">
-                <div class="form-group"><label>Opacity (0–0.2)</label><input type="range" id="watermarkOpacity" min="0" max="0.2" step="0.01" value="0.05"></div>
-                <div class="form-group"><label>Size (px)</label><input type="range" id="watermarkSize" min="20" max="120" step="2" value="48"></div>
-                <div class="form-group"><label>Rotation (deg)</label><input type="range" id="watermarkRotation" min="-45" max="45" step="1" value="-25"></div>
-            </div>
-            <div class="form-group">
-                <label>Position</label>
-                <select id="watermarkPosition">
-                    <option value="center">Center</option>
-                    <option value="diagonal" selected>Diagonal (top-left to bottom-right)</option>
-                    <option value="top-left">Top Left</option>
-                    <option value="bottom-right">Bottom Right</option>
-                </select>
+                <label style="display:flex; align-items:center; gap:10px;">
+                    <input type="checkbox" id="toggleTextWatermark"> Enable Text Watermark
+                </label>
+                <div id="textWatermarkSettings" style="display:none;">
+                    <div class="form-group"><label>Watermark Text</label><input type="text" id="watermarkText" value="CONFIDENTIAL"></div>
+                    <div class="row">
+                        <div class="form-group"><label>Opacity (0–1)</label><input type="number" id="watermarkOpacity" step="0.05" min="0" max="1" value="0.1"></div>
+                        <div class="form-group"><label>Rotation (deg)</label><input type="number" id="watermarkRotation" step="5" value="-25"></div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group"><label>Left (%)</label><input type="number" id="watermarkLeft" step="5" value="50"></div>
+                        <div class="form-group"><label>Top (%)</label><input type="number" id="watermarkTop" step="5" value="50"></div>
+                    </div>
+                    <div class="form-group"><label>Font Size (px)</label><input type="number" id="watermarkFontSize" value="48"></div>
+                </div>
             </div>
 
             <button class="btn btn-primary" id="updateBtn" style="width:100%; margin-top:10px;">Refresh Preview</button>
@@ -598,15 +346,13 @@
 
         <!-- PREVIEW PANEL -->
         <div class="preview-panel" id="previewPanel">
-            <div class="letterhead-preview" id="letterheadPreviewContainer" style="position: relative;">
-                <!-- Dynamic text watermark -->
-                <div id="dynamicWatermark" class="text-watermark"></div>
+            <div class="letterhead-preview" id="letterheadPreviewContainer">
                 <div class="letterhead-header">
                     <div class="letterhead-logo-area">
                         <img id="previewLogoImg" class="preview-logo" src="34391.png" alt="Logo">
                         <div>
                             <div class="letterhead-title" id="previewCompanyName">Halder & Co.</div>
-                            <div class="letterhead-tagline" id="previewTagline">Premium Interior Materials</div>
+                            <div class="letterhead-tagline" id="previewTagline">Premium Interior Materials Tailored to Your Needs</div>
                         </div>
                     </div>
                     <div class="letterhead-address-block">
@@ -618,27 +364,30 @@
                         <p id="previewWebsite" style="font-size:11px;">https://halderandco.github.io/</p>
                     </div>
                 </div>
-
-                <!-- Optional fields display area -->
-                <div id="optionalFieldsContainer" style="margin-bottom: 20px;"></div>
-
                 <div class="letterhead-body">
-                    <div class="letterhead-body-content" id="previewLetterBody"></div>
+                    <div id="previewOptionalFields" style="margin-bottom:16px;"></div>
+                    <div class="letterhead-body-content" id="previewLetterBody">
+                        <p>To,<br>The Concern,<br><br>Subject: Official Communication<br><br>Dear Sir/Madam,</p>
+                        <p style="margin-top:12px;">This is a system-generated letterhead for all official correspondence. Please find the details above. We look forward to a continued professional relationship.</p>
+                        <p style="margin-top:20px;">Yours faithfully,<br><strong>Halder & Co.</strong></p>
+                    </div>
                 </div>
                 <div class="letterhead-footer">
                     <div class="footer-left" id="previewFooterNote">Regd. Office: 73/C Topsia Road South, Kolkata – 700046</div>
-                    <div class="footer-right" id="previewDisclaimer"></div>
+                    <div class="footer-right">State Code: 19 (West Bengal) | ⚡ Computer Generated Document</div>
                 </div>
+                <div class="watermark-light" id="watermarkDiv" style="background-image: url('34391.png');"></div>
+                <div id="textWatermarkPreview" class="text-watermark" style="display:none;"></div>
             </div>
         </div>
     </div>
 </div>
 <div class="page-footer no-print">
     <p>Halder & Co. – Letterhead Studio | Professional Stationery System</p>
-    <p>&copy; <span id="currentYear"></span> Halder & Co. | All rights reserved</p>
+    <p style="font-size: 11px; margin-top: 5px;">&copy; <span id="currentYear"></span> Halder & Co. | All rights reserved</p>
 </div>
 
-<!-- Export Modal -->
+<!-- Export Modal (same as invoice) -->
 <div class="modal-overlay" id="exportModal">
     <div class="export-modal">
         <div class="modal-header"><h3>Export Letterhead</h3><button id="closeModalBtn" style="background:none; border:none; font-size:24px;">&times;</button></div>
@@ -647,8 +396,10 @@
             <div class="export-option" data-type="pdf"><i class="fas fa-file-pdf fa-2x"></i><br>Download PDF</div>
             <div class="export-option" data-type="preview"><i class="fas fa-eye fa-2x"></i><br>Preview</div>
         </div>
-        <div class="modal-footer"><button class="btn btn-outline" id="cancelExportBtn">Cancel</button>
-        <button class="btn btn-primary" id="confirmExportBtn" disabled>Continue</button></div>
+        <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:12px; margin-top:20px;">
+            <button class="btn btn-outline" id="cancelExportBtn">Cancel</button>
+            <button class="btn btn-primary" id="confirmExportBtn" disabled>Continue</button>
+        </div>
     </div>
 </div>
 <!-- Print Preview Modal -->
@@ -659,7 +410,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('currentYear').textContent = new Date().getFullYear();
-
+        
         // DOM elements mapping
         const fields = {
             companyName: document.getElementById('companyName'),
@@ -676,24 +427,13 @@
             letterBody: document.getElementById('letterBody'),
             footerNote: document.getElementById('footerNote'),
             // Optional fields
-            showRefNo: document.getElementById('showRefNo'),
-            refNo: document.getElementById('refNo'),
-            showSubject: document.getElementById('showSubject'),
             subjectLine: document.getElementById('subjectLine'),
-            showContactDetails: document.getElementById('showContactDetails'),
-            contactPhone2: document.getElementById('contactPhone2'),
-            contactEmail2: document.getElementById('contactEmail2'),
-            showDisclaimer: document.getElementById('showDisclaimer'),
-            disclaimerText: document.getElementById('disclaimerText'),
-            // Watermark
-            watermarkText: document.getElementById('watermarkText'),
-            watermarkOpacity: document.getElementById('watermarkOpacity'),
-            watermarkSize: document.getElementById('watermarkSize'),
-            watermarkRotation: document.getElementById('watermarkRotation'),
-            watermarkPosition: document.getElementById('watermarkPosition')
+            referenceNo: document.getElementById('referenceNo'),
+            attachments: document.getElementById('attachments'),
+            attention: document.getElementById('attention')
         };
-
-        // Preview spans
+        
+        // Preview elements
         const preview = {
             companyName: document.getElementById('previewCompanyName'),
             tagline: document.getElementById('previewTagline'),
@@ -706,10 +446,11 @@
             website: document.getElementById('previewWebsite'),
             letterBody: document.getElementById('previewLetterBody'),
             footerNote: document.getElementById('previewFooterNote'),
-            disclaimer: document.getElementById('previewDisclaimer'),
-            logoImg: document.getElementById('previewLogoImg')
+            logoImg: document.getElementById('previewLogoImg'),
+            optionalFieldsContainer: document.getElementById('previewOptionalFields')
         };
-
+        
+        // Default data
         const defaultData = {
             companyName: "Halder & Co.",
             tagline: "Premium Interior Materials Tailored to Your Needs",
@@ -724,82 +465,72 @@
             website: "https://halderandco.github.io/",
             letterBody: "To,\nThe Concern,\n\nSubject: Official Communication\n\nDear Sir/Madam,\n\nThis is a system-generated letterhead for all official correspondence. Please find the details above. We look forward to a continued professional relationship.\n\nYours faithfully,\nHalder & Co.",
             footerNote: "Regd. Office: 73/C Topsia Road South, Kolkata – 700046",
-            refNo: "HAL/REF/001",
             subjectLine: "Important Communication",
-            disclaimerText: "This is a system generated letterhead, no signature required.",
-            watermarkText: "HALDER & CO.",
-            watermarkOpacity: 0.05,
-            watermarkSize: 48,
-            watermarkRotation: -25,
-            watermarkPosition: "diagonal"
+            referenceNo: "REF/HAL/2025/001",
+            attachments: "Brochure, Product Catalogue",
+            attention: "Accounts Department"
         };
-
+        
         // Load/Save storage
         function loadFromStorage() {
-            const saved = localStorage.getItem('halder_letterhead_enhanced');
+            const saved = localStorage.getItem('halder_letterhead');
             if(saved) {
                 try {
                     const data = JSON.parse(saved);
                     for(let key of Object.keys(fields)) {
-                        if(fields[key] && data[key] !== undefined) {
-                            if(fields[key].type === 'checkbox') fields[key].checked = data[key];
-                            else fields[key].value = data[key];
-                        }
+                        if(data[key] !== undefined && fields[key]) fields[key].value = data[key];
                     }
+                    // checkbox states
+                    if(data.showSubject !== undefined) document.getElementById('showSubject').checked = data.showSubject;
+                    if(data.showReference !== undefined) document.getElementById('showReference').checked = data.showReference;
+                    if(data.showAttachments !== undefined) document.getElementById('showAttachments').checked = data.showAttachments;
+                    if(data.showAttention !== undefined) document.getElementById('showAttention').checked = data.showAttention;
+                    if(data.toggleTextWatermark !== undefined) document.getElementById('toggleTextWatermark').checked = data.toggleTextWatermark;
+                    if(data.watermarkText) document.getElementById('watermarkText').value = data.watermarkText;
+                    if(data.watermarkOpacity) document.getElementById('watermarkOpacity').value = data.watermarkOpacity;
+                    if(data.watermarkRotation) document.getElementById('watermarkRotation').value = data.watermarkRotation;
+                    if(data.watermarkLeft) document.getElementById('watermarkLeft').value = data.watermarkLeft;
+                    if(data.watermarkTop) document.getElementById('watermarkTop').value = data.watermarkTop;
+                    if(data.watermarkFontSize) document.getElementById('watermarkFontSize').value = data.watermarkFontSize;
                     return true;
                 } catch(e) {}
             }
             return false;
         }
+        
         function saveToStorage(showMsg = false) {
             const data = {};
             for(let key of Object.keys(fields)) {
-                if(fields[key]) {
-                    if(fields[key].type === 'checkbox') data[key] = fields[key].checked;
-                    else data[key] = fields[key].value;
-                }
+                if(fields[key]) data[key] = fields[key].value;
             }
-            localStorage.setItem('halder_letterhead_enhanced', JSON.stringify(data));
+            data.showSubject = document.getElementById('showSubject').checked;
+            data.showReference = document.getElementById('showReference').checked;
+            data.showAttachments = document.getElementById('showAttachments').checked;
+            data.showAttention = document.getElementById('showAttention').checked;
+            data.toggleTextWatermark = document.getElementById('toggleTextWatermark').checked;
+            data.watermarkText = document.getElementById('watermarkText').value;
+            data.watermarkOpacity = document.getElementById('watermarkOpacity').value;
+            data.watermarkRotation = document.getElementById('watermarkRotation').value;
+            data.watermarkLeft = document.getElementById('watermarkLeft').value;
+            data.watermarkTop = document.getElementById('watermarkTop').value;
+            data.watermarkFontSize = document.getElementById('watermarkFontSize').value;
+            localStorage.setItem('halder_letterhead', JSON.stringify(data));
             if(showMsg) showToast('Letterhead configuration saved');
         }
-
-        function showToast(msg, type='success') {
-            let toastDiv = document.createElement('div');
-            toastDiv.className = 'toast';
-            toastDiv.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i> ${msg}`;
-            document.body.appendChild(toastDiv);
-            setTimeout(() => toastDiv.classList.add('show'), 10);
-            setTimeout(() => { toastDiv.classList.remove('show'); setTimeout(()=>toastDiv.remove(), 300); }, 3000);
+        
+        // Helper: show/hide optional fields groups
+        function toggleOptionalFieldsVisibility() {
+            const show = document.getElementById('toggleOptionalFields').checked;
+            document.getElementById('optionalFieldsContainer').style.display = show ? 'block' : 'none';
         }
-
-        // Update watermark styles
-        function updateWatermark() {
-            const wmDiv = document.getElementById('dynamicWatermark');
-            const text = fields.watermarkText.value.trim() || "HALDER & CO.";
-            const opacity = parseFloat(fields.watermarkOpacity.value);
-            const size = parseInt(fields.watermarkSize.value);
-            const rotation = parseInt(fields.watermarkRotation.value);
-            const position = fields.watermarkPosition.value;
-            wmDiv.innerText = text;
-            wmDiv.style.opacity = opacity;
-            wmDiv.style.fontSize = size + 'px';
-            let transform = `rotate(${rotation}deg)`;
-            let top = '50%', left = '50%', translate = 'translate(-50%, -50%)';
-            if(position === 'diagonal') {
-                top = '50%'; left = '50%'; translate = 'translate(-50%, -50%)';
-            } else if(position === 'top-left') {
-                top = '10%'; left = '5%'; translate = 'translate(0,0)';
-            } else if(position === 'bottom-right') {
-                top = '85%'; left = '85%'; translate = 'translate(-100%, -100%)';
-            } else { // center
-                top = '50%'; left = '50%'; translate = 'translate(-50%, -50%)';
-            }
-            wmDiv.style.top = top;
-            wmDiv.style.left = left;
-            wmDiv.style.transform = `${translate} ${transform}`;
+        
+        function toggleTextWatermarkSettings() {
+            const enabled = document.getElementById('toggleTextWatermark').checked;
+            document.getElementById('textWatermarkSettings').style.display = enabled ? 'block' : 'none';
+            updatePreview();
         }
-
-        // Update preview including optional fields
+        
+        // Update preview (core)
         function updatePreview() {
             // Basic company info
             preview.companyName.innerText = fields.companyName.value.trim() || defaultData.companyName;
@@ -813,82 +544,113 @@
             preview.phone.innerText = fields.phone.value.trim() || defaultData.phone;
             preview.email.innerText = fields.email.value.trim() || defaultData.email;
             preview.website.innerText = fields.website.value.trim() || defaultData.website;
-
-            // Letter body with placeholders support (replace placeholders in preview only, not stored raw)
-            let bodyRaw = fields.letterBody.value.trim();
-            if(!bodyRaw) bodyRaw = defaultData.letterBody;
-            let processedBody = bodyRaw.replace(/\{date\}/g, new Date().toLocaleDateString('en-GB'))
-                                       .replace(/\{recipient\}/g, 'Recipient Name')
-                                       .replace(/\{company\}/g, fields.companyName.value.trim() || defaultData.companyName);
-            preview.letterBody.innerHTML = processedBody.replace(/\n/g, '<br>');
-
-            // Footer note
+            let bodyText = fields.letterBody.value.trim();
+            preview.letterBody.innerHTML = bodyText ? bodyText.replace(/\n/g,'<br>') : defaultData.letterBody.replace(/\n/g,'<br>');
             preview.footerNote.innerText = fields.footerNote.value.trim() || defaultData.footerNote;
-
-            // Optional fields container
-            let optContainer = document.getElementById('optionalFieldsContainer');
-            optContainer.innerHTML = '';
-            if(fields.showRefNo.checked && fields.refNo.value.trim()) {
-                let p = document.createElement('p');
-                p.innerHTML = `<strong>Ref. No.:</strong> ${escapeHtml(fields.refNo.value)}`;
-                optContainer.appendChild(p);
-            }
-            if(fields.showSubject.checked && fields.subjectLine.value.trim()) {
-                let p = document.createElement('p');
-                p.innerHTML = `<strong>Subject:</strong> ${escapeHtml(fields.subjectLine.value)}`;
-                optContainer.appendChild(p);
-            }
-            if(fields.showContactDetails.checked && (fields.contactPhone2.value.trim() || fields.contactEmail2.value.trim())) {
-                let p = document.createElement('p');
-                let details = [];
-                if(fields.contactPhone2.value.trim()) details.push(`<i class="fas fa-phone-alt"></i> ${escapeHtml(fields.contactPhone2.value)}`);
-                if(fields.contactEmail2.value.trim()) details.push(`<i class="fas fa-envelope"></i> ${escapeHtml(fields.contactEmail2.value)}`);
-                p.innerHTML = `<strong>Contact:</strong> ${details.join(' | ')}`;
-                optContainer.appendChild(p);
-            }
-            // Disclaimer in footer
-            if(fields.showDisclaimer.checked && fields.disclaimerText.value.trim()) {
-                preview.disclaimer.innerText = fields.disclaimerText.value;
-            } else {
-                preview.disclaimer.innerText = '';
-            }
-
+            
             // Logo
             let logoUrlVal = fields.logoUrl.value.trim();
-            preview.logoImg.src = logoUrlVal || "34391.png";
-            preview.logoImg.onerror = function() { this.src = "34391.png"; };
-
-            // Watermark
-            updateWatermark();
-
-            // Character counter
-            document.getElementById('letterBodyCounter').innerText = fields.letterBody.value.length + ' characters';
+            if(logoUrlVal) {
+                preview.logoImg.src = logoUrlVal;
+                preview.logoImg.onerror = function() { this.src = "34391.png"; };
+            } else {
+                preview.logoImg.src = "34391.png";
+            }
+            
+            // Optional fields rendering
+            let optionalHtml = '';
+            const showSubject = document.getElementById('showSubject').checked;
+            const showRef = document.getElementById('showReference').checked;
+            const showAttach = document.getElementById('showAttachments').checked;
+            const showAttention = document.getElementById('showAttention').checked;
+            if(showSubject && fields.subjectLine.value.trim()) optionalHtml += `<div class="optional-field"><strong>Subject:</strong> ${escapeHtml(fields.subjectLine.value)}</div>`;
+            if(showRef && fields.referenceNo.value.trim()) optionalHtml += `<div class="optional-field"><strong>Ref. No.:</strong> ${escapeHtml(fields.referenceNo.value)}</div>`;
+            if(showAttention && fields.attention.value.trim()) optionalHtml += `<div class="optional-field"><strong>Attention:</strong> ${escapeHtml(fields.attention.value)}</div>`;
+            if(showAttach && fields.attachments.value.trim()) optionalHtml += `<div class="optional-field"><strong>Enclosures:</strong> ${escapeHtml(fields.attachments.value)}</div>`;
+            preview.optionalFieldsContainer.innerHTML = optionalHtml;
+            
+            // Text Watermark
+            const watermarkEnabled = document.getElementById('toggleTextWatermark').checked;
+            const watermarkDiv = document.getElementById('textWatermarkPreview');
+            if(watermarkEnabled) {
+                const text = document.getElementById('watermarkText').value || 'CONFIDENTIAL';
+                const opacity = parseFloat(document.getElementById('watermarkOpacity').value) || 0.1;
+                const rotation = parseFloat(document.getElementById('watermarkRotation').value) || -25;
+                const left = parseFloat(document.getElementById('watermarkLeft').value) || 50;
+                const top = parseFloat(document.getElementById('watermarkTop').value) || 50;
+                const fontSize = parseFloat(document.getElementById('watermarkFontSize').value) || 48;
+                watermarkDiv.style.display = 'block';
+                watermarkDiv.innerText = text;
+                watermarkDiv.style.opacity = opacity;
+                watermarkDiv.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+                watermarkDiv.style.left = `${left}%`;
+                watermarkDiv.style.top = `${top}%`;
+                watermarkDiv.style.fontSize = `${fontSize}px`;
+                watermarkDiv.style.color = '#000000';
+            } else {
+                watermarkDiv.style.display = 'none';
+            }
+            
             saveToStorage(false);
+            updateCharCounter();
         }
-
-        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
-
-        // Rich text helpers (same as before)
-        function getSelectionStartEnd(textarea) {
-            return { start: textarea.selectionStart, end: textarea.selectionEnd };
+        
+        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+        
+        function resetAll() {
+            if(confirm('Reset all letterhead data to default?')) {
+                for(let key of Object.keys(fields)) {
+                    if(fields[key] && defaultData[key] !== undefined) fields[key].value = defaultData[key];
+                    else if(fields[key] && key === 'logoUrl') fields[key].value = defaultData.logoUrl;
+                }
+                document.getElementById('showSubject').checked = true;
+                document.getElementById('showReference').checked = true;
+                document.getElementById('showAttachments').checked = false;
+                document.getElementById('showAttention').checked = false;
+                document.getElementById('toggleTextWatermark').checked = false;
+                document.getElementById('watermarkText').value = "CONFIDENTIAL";
+                document.getElementById('watermarkOpacity').value = 0.1;
+                document.getElementById('watermarkRotation').value = -25;
+                document.getElementById('watermarkLeft').value = 50;
+                document.getElementById('watermarkTop').value = 50;
+                document.getElementById('watermarkFontSize').value = 48;
+                toggleTextWatermarkSettings();
+                updatePreview();
+                showToast('Letterhead reset to defaults', 'info');
+            }
         }
-        function wrapText(openTag, closeTag) {
+        
+        function showToast(msg, type='success') {
+            let toastDiv = document.createElement('div');
+            toastDiv.className = 'toast';
+            toastDiv.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i> ${msg}`;
+            document.body.appendChild(toastDiv);
+            setTimeout(() => toastDiv.classList.add('show'), 10);
+            setTimeout(() => { toastDiv.classList.remove('show'); setTimeout(()=>toastDiv.remove(), 300); }, 3000);
+        }
+        
+        // Rich text helpers (same as invoice)
+        function wrapText(tag, openTag, closeTag) {
             const textarea = fields.letterBody;
-            const { start, end } = getSelectionStartEnd(textarea);
-            const selectedText = textarea.value.substring(start, end);
-            const newText = textarea.value.substring(0, start) + openTag + selectedText + closeTag + textarea.value.substring(end);
-            textarea.value = newText;
-            textarea.setSelectionRange(start + openTag.length, end + openTag.length);
+            const start = textarea.selectionStart, end = textarea.selectionEnd;
+            const selected = textarea.value.substring(start, end);
+            if(selected) {
+                textarea.value = textarea.value.substring(0, start) + openTag + selected + closeTag + textarea.value.substring(end);
+                textarea.setSelectionRange(start + openTag.length, end + openTag.length);
+            } else {
+                textarea.value = textarea.value.substring(0, start) + openTag + 'text' + closeTag + textarea.value.substring(end);
+                textarea.setSelectionRange(start + openTag.length, start + openTag.length + 4);
+            }
             textarea.focus();
             updatePreview();
         }
         function applyList(type) {
             const textarea = fields.letterBody;
-            const { start, end } = getSelectionStartEnd(textarea);
-            const selectedText = textarea.value.substring(start, end);
-            if(!selectedText) return;
-            const lines = selectedText.split(/\r?\n/);
-            const formatted = lines.map((line,idx) => type==='ul' ? `• ${line}` : `${idx+1}. ${line}`).join('\n');
+            const start = textarea.selectionStart, end = textarea.selectionEnd;
+            const selected = textarea.value.substring(start, end);
+            if(!selected) return;
+            const lines = selected.split(/\r?\n/);
+            const formatted = lines.map((l,i) => type==='ul' ? `• ${l}` : `${i+1}. ${l}`).join('\n');
             textarea.value = textarea.value.substring(0, start) + formatted + textarea.value.substring(end);
             textarea.setSelectionRange(start, start + formatted.length);
             textarea.focus();
@@ -896,40 +658,38 @@
         }
         function applyAlignment(align) {
             const textarea = fields.letterBody;
-            const { start, end } = getSelectionStartEnd(textarea);
-            const selectedText = textarea.value.substring(start, end);
-            if(!selectedText) return;
-            const aligned = `<div style="text-align:${align};">${selectedText}</div>`;
-            textarea.value = textarea.value.substring(0, start) + aligned + textarea.value.substring(end);
+            const start = textarea.selectionStart, end = textarea.selectionEnd;
+            const selected = textarea.value.substring(start, end);
+            if(!selected) return;
+            const wrapped = `<div style="text-align:${align};">${selected}</div>`;
+            textarea.value = textarea.value.substring(0, start) + wrapped + textarea.value.substring(end);
+            textarea.setSelectionRange(start + wrapped.length - selected.length - 6, start + wrapped.length - 6);
             textarea.focus();
             updatePreview();
         }
         function clearFormatting() {
-            let raw = fields.letterBody.value.replace(/<[^>]*>/g, '').replace(/^\s*[\d]+\.\s+/gm, '').replace(/^\s*[•\-]\s+/gm, '');
+            let raw = fields.letterBody.value;
+            raw = raw.replace(/<[^>]*>/g, '').replace(/^\s*[\d]+\.\s+/gm, '').replace(/^\s*[•\-]\s+/gm, '');
             fields.letterBody.value = raw;
             updatePreview();
             showToast('Formatting cleared', 'info');
         }
-        function insertPlaceholder(placeholder) {
-            const textarea = fields.letterBody;
-            const { start, end } = getSelectionStartEnd(textarea);
-            const newText = textarea.value.substring(0, start) + placeholder + textarea.value.substring(end);
-            textarea.value = newText;
-            textarea.setSelectionRange(start + placeholder.length, start + placeholder.length);
-            textarea.focus();
-            updatePreview();
+        function updateCharCounter() {
+            const len = fields.letterBody.value.length;
+            const counter = document.getElementById('letterBodyCounter');
+            if(counter) counter.innerText = `${len} characters${len > 2000 ? ' (long content)' : ''}`;
         }
-
-        // Toolbar events
+        
+        // Attach toolbar
         document.querySelectorAll('.toolbar-btn[data-format]').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const fmt = btn.dataset.format;
-                if(fmt === 'bold') wrapText('<strong>', '</strong>');
-                else if(fmt === 'italic') wrapText('<em>', '</em>');
-                else if(fmt === 'underline') wrapText('<u>', '</u>');
-                else if(fmt === 'h3') wrapText('<h3>', '</h3>');
-                else if(fmt === 'p') wrapText('<p>', '</p>');
+                if(fmt === 'bold') wrapText('b','<strong>','</strong>');
+                else if(fmt === 'italic') wrapText('i','<em>','</em>');
+                else if(fmt === 'underline') wrapText('u','<u>','</u>');
+                else if(fmt === 'h3') wrapText('h3','<h3>','</h3>');
+                else if(fmt === 'p') wrapText('p','<p>','</p>');
                 else if(fmt === 'ul') applyList('ul');
                 else if(fmt === 'ol') applyList('ol');
                 else if(fmt === 'alignLeft') applyAlignment('left');
@@ -938,43 +698,24 @@
             });
         });
         document.getElementById('clearFormattingBtn')?.addEventListener('click', (e) => { e.preventDefault(); clearFormatting(); });
-        document.getElementById('insertDatePlaceholder')?.addEventListener('click', () => insertPlaceholder('{date}'));
-        document.getElementById('insertRecipientPlaceholder')?.addEventListener('click', () => insertPlaceholder('{recipient}'));
-        document.getElementById('insertCompanyPlaceholder')?.addEventListener('click', () => insertPlaceholder('{company}'));
-
-        // Event listeners for all inputs
-        for(let key of Object.keys(fields)) {
-            if(fields[key]) {
-                fields[key].addEventListener('input', updatePreview);
-                if(fields[key].type === 'checkbox') fields[key].addEventListener('change', updatePreview);
-            }
-        }
+        
+        // Event listeners
+        for(let key of Object.keys(fields)) if(fields[key]) fields[key].addEventListener('input', updatePreview);
         document.getElementById('updateLetterhead').addEventListener('click', updatePreview);
         document.getElementById('updateBtn').addEventListener('click', updatePreview);
         document.getElementById('manualSaveBtn').addEventListener('click', () => saveToStorage(true));
-        document.getElementById('resetForm').addEventListener('click', () => {
-            if(confirm('Reset all data to defaults?')) {
-                for(let key of Object.keys(fields)) {
-                    if(fields[key]) {
-                        if(defaultData[key] !== undefined) {
-                            if(fields[key].type === 'checkbox') fields[key].checked = defaultData[key];
-                            else fields[key].value = defaultData[key];
-                        } else if(key === 'refNo') fields[key].value = defaultData.refNo;
-                        else if(key === 'subjectLine') fields[key].value = defaultData.subjectLine;
-                        else if(key === 'disclaimerText') fields[key].value = defaultData.disclaimerText;
-                        else if(key === 'watermarkText') fields[key].value = defaultData.watermarkText;
-                        else if(key === 'watermarkOpacity') fields[key].value = defaultData.watermarkOpacity;
-                        else if(key === 'watermarkSize') fields[key].value = defaultData.watermarkSize;
-                        else if(key === 'watermarkRotation') fields[key].value = defaultData.watermarkRotation;
-                        else if(key === 'watermarkPosition') fields[key].value = defaultData.watermarkPosition;
-                    }
-                }
-                updatePreview();
-                showToast('Reset to defaults', 'info');
-            }
+        document.getElementById('resetForm').addEventListener('click', resetAll);
+        document.getElementById('toggleOptionalFields').addEventListener('change', toggleOptionalFieldsVisibility);
+        document.getElementById('toggleTextWatermark').addEventListener('change', toggleTextWatermarkSettings);
+        document.getElementById('showSubject').addEventListener('change', updatePreview);
+        document.getElementById('showReference').addEventListener('change', updatePreview);
+        document.getElementById('showAttachments').addEventListener('change', updatePreview);
+        document.getElementById('showAttention').addEventListener('change', updatePreview);
+        ['watermarkText','watermarkOpacity','watermarkRotation','watermarkLeft','watermarkTop','watermarkFontSize'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updatePreview);
         });
-
-        // Export functionality (replicated from invoice system)
+        
+        // Export modal (identical to invoice system)
         const exportModal = document.getElementById('exportModal');
         const exportBtn = document.getElementById('exportLetterhead');
         let selectedType = null;
@@ -989,9 +730,8 @@
                 document.getElementById('confirmExportBtn').disabled = false;
             };
         });
-
+        
         function getPrintHtml() {
-            // Build current preview state into clean HTML for export
             const company = fields.companyName.value.trim() || defaultData.companyName;
             const tagline = fields.tagline.value.trim() || defaultData.tagline;
             const addr1 = fields.addressLine1.value.trim() || defaultData.addressLine1;
@@ -1002,80 +742,128 @@
             const phoneVal = fields.phone.value.trim() || defaultData.phone;
             const emailVal = fields.email.value.trim() || defaultData.email;
             const websiteVal = fields.website.value.trim() || defaultData.website;
-            const logo = fields.logoUrl.value.trim() || "34391.png";
-            let bodyHtml = fields.letterBody.value.trim() || defaultData.letterBody;
-            bodyHtml = bodyHtml.replace(/\{date\}/g, new Date().toLocaleDateString('en-GB'))
-                               .replace(/\{recipient\}/g, 'Recipient Name')
-                               .replace(/\{company\}/g, company);
+            const letterBodyHtml = fields.letterBody.value.trim() ? fields.letterBody.value : defaultData.letterBody;
             const footerNoteVal = fields.footerNote.value.trim() || defaultData.footerNote;
-            // Optional fields
-            let optionalHtml = '';
-            if(fields.showRefNo.checked && fields.refNo.value.trim()) optionalHtml += `<p><strong>Ref. No.:</strong> ${escapeHtml(fields.refNo.value)}</p>`;
-            if(fields.showSubject.checked && fields.subjectLine.value.trim()) optionalHtml += `<p><strong>Subject:</strong> ${escapeHtml(fields.subjectLine.value)}</p>`;
-            if(fields.showContactDetails.checked && (fields.contactPhone2.value.trim() || fields.contactEmail2.value.trim())) {
-                let details = [];
-                if(fields.contactPhone2.value.trim()) details.push(`<i class="fas fa-phone-alt"></i> ${escapeHtml(fields.contactPhone2.value)}`);
-                if(fields.contactEmail2.value.trim()) details.push(`<i class="fas fa-envelope"></i> ${escapeHtml(fields.contactEmail2.value)}`);
-                optionalHtml += `<p><strong>Contact:</strong> ${details.join(' | ')}</p>`;
+            const logoUrlFinal = fields.logoUrl.value.trim() || "34391.png";
+            
+            // Optional fields for print
+            let optionalPrint = '';
+            if(document.getElementById('showSubject').checked && fields.subjectLine.value.trim()) optionalPrint += `<div class="optional-field"><strong>Subject:</strong> ${escapeHtml(fields.subjectLine.value)}</div>`;
+            if(document.getElementById('showReference').checked && fields.referenceNo.value.trim()) optionalPrint += `<div class="optional-field"><strong>Ref. No.:</strong> ${escapeHtml(fields.referenceNo.value)}</div>`;
+            if(document.getElementById('showAttention').checked && fields.attention.value.trim()) optionalPrint += `<div class="optional-field"><strong>Attention:</strong> ${escapeHtml(fields.attention.value)}</div>`;
+            if(document.getElementById('showAttachments').checked && fields.attachments.value.trim()) optionalPrint += `<div class="optional-field"><strong>Enclosures:</strong> ${escapeHtml(fields.attachments.value)}</div>`;
+            
+            // Text watermark for print
+            let textWatermarkStyle = '';
+            let textWatermarkDiv = '';
+            if(document.getElementById('toggleTextWatermark').checked) {
+                const wmText = document.getElementById('watermarkText').value || 'CONFIDENTIAL';
+                const wmOpacity = parseFloat(document.getElementById('watermarkOpacity').value) || 0.1;
+                const wmRot = parseFloat(document.getElementById('watermarkRotation').value) || -25;
+                const wmLeft = parseFloat(document.getElementById('watermarkLeft').value) || 50;
+                const wmTop = parseFloat(document.getElementById('watermarkTop').value) || 50;
+                const wmFont = parseFloat(document.getElementById('watermarkFontSize').value) || 48;
+                textWatermarkStyle = `.text-watermark-print { position: absolute; pointer-events: none; white-space: nowrap; font-family: 'Cormorant Garamond', serif; font-weight: bold; color: #000; opacity: ${wmOpacity}; transform: translate(-50%, -50%) rotate(${wmRot}deg); left: ${wmLeft}%; top: ${wmTop}%; font-size: ${wmFont}px; z-index: 1; }`;
+                textWatermarkDiv = `<div class="text-watermark-print">${escapeHtml(wmText)}</div>`;
             }
-            let disclaimerHtml = '';
-            if(fields.showDisclaimer.checked && fields.disclaimerText.value.trim()) disclaimerHtml = `<div style="text-align:right; font-size:10px;">${escapeHtml(fields.disclaimerText.value)}</div>`;
-            // Watermark CSS
-            const wmText = fields.watermarkText.value.trim() || "HALDER & CO.";
-            const wmOpacity = parseFloat(fields.watermarkOpacity.value);
-            const wmSize = parseInt(fields.watermarkSize.value);
-            const wmRot = parseInt(fields.watermarkRotation.value);
-            const wmPos = fields.watermarkPosition.value;
-            let wmStyle = `position:absolute; pointer-events:none; font-family:'Cormorant Garamond',serif; font-weight:700; white-space:nowrap; text-transform:uppercase; color:rgba(0,0,0,${wmOpacity}); font-size:${wmSize}px; transform:rotate(${wmRot}deg);`;
-            if(wmPos === 'center') wmStyle += 'top:50%; left:50%; transform:translate(-50%, -50%) rotate('+wmRot+'deg);';
-            else if(wmPos === 'diagonal') wmStyle += 'top:50%; left:50%; transform:translate(-50%, -50%) rotate('+wmRot+'deg);';
-            else if(wmPos === 'top-left') wmStyle += 'top:10%; left:5%; transform:rotate('+wmRot+'deg);';
-            else if(wmPos === 'bottom-right') wmStyle += 'bottom:10%; right:5%; transform:rotate('+wmRot+'deg);';
-
-            return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Halder & Co. Letterhead</title><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>body { font-family: 'Source Sans 3', sans-serif; margin: 20mm; background: white; } .letter-container { max-width: 100%; position: relative; background: white; } .header { border-bottom: 2px solid #1f3d2b; padding-bottom: 20px; margin-bottom: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; } .logo-area { display: flex; gap: 16px; align-items: center; } .logo-img { width: 70px; height: 70px; border-radius: 50%; } .company-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; color: #1f3d2b; } .tagline { font-size: 12px; color: #6f7b74; } .address-block { text-align: right; font-size: 12px; } .body { margin: 28px 0; line-height: 1.6; } .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #e0e0e0; font-size: 10px; text-align: center; } @media print { body { margin: 0; padding: 0; } }</style></head><body><div class="letter-container"><div style="${wmStyle}">${escapeHtml(wmText)}</div><div class="header"><div class="logo-area"><img src="${logo}" class="logo-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2248%22 fill=%22%231f3d2b%22/%3E%3Ctext x=%2250%22 y=%2267%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2242%22 font-family=%22Arial%22%3EHC%3C/text%3E%3C/svg%3E'"><div><div class="company-title">${escapeHtml(company)}</div><div class="tagline">${escapeHtml(tagline)}</div></div></div><div class="address-block">${escapeHtml(addr1)}<br>${escapeHtml(addr2)}<br>${escapeHtml(city)}<br><strong>GSTIN: ${escapeHtml(gst)} | PAN: ${escapeHtml(panNum)}</strong><br><i class="fas fa-phone"></i> ${escapeHtml(phoneVal)} &nbsp;|&nbsp; <i class="fas fa-envelope"></i> ${escapeHtml(emailVal)}<br><i class="fas fa-globe"></i> ${escapeHtml(websiteVal)}</div></div>${optionalHtml ? `<div>${optionalHtml}</div>` : ''}<div class="body">${bodyHtml}</div><div class="footer">${escapeHtml(footerNoteVal)}<br>${disclaimerHtml}</div></div></body></html>`;
+            
+            return `<!DOCTYPE html>
+            <html>
+            <head><meta charset="UTF-8"><title>Halder & Co. – Official Letterhead</title>
+            <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <style>
+                * { margin:0; padding:0; box-sizing:border-box; }
+                body { font-family: 'Source Sans 3', sans-serif; background: white; margin: 20mm; font-size: 14px; line-height: 1.5; color: #2b2b2b; }
+                .letterhead-container { max-width: 100%; background: white; position: relative; overflow: hidden; }
+                .watermark-print { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-25deg); opacity: 0.04; pointer-events: none; width: 350px; height: 350px; background-size: contain; background-repeat: no-repeat; background-position: center; filter: grayscale(100%); background-image: url('${logoUrlFinal}'); }
+                ${textWatermarkStyle}
+                .letterhead-header { border-bottom: 2px solid #1f3d2b; padding-bottom: 20px; margin-bottom: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 20px; }
+                .header-left { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+                .preview-logo-print { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 1px solid #e0e0e0; }
+                .company-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; color: #1f3d2b; letter-spacing: 1px; margin-bottom: 6px; }
+                .company-tagline { font-size: 12px; color: #6f7b74; }
+                .header-right { text-align: right; font-size: 12px; color: #5a5a5a; line-height: 1.4; }
+                .address-block { margin-top: 8px; font-size: 12px; line-height: 1.4; color: #5a5a5a; text-align: right; }
+                .gst-pan { font-weight: 600; color: #1f3d2b; font-size: 11px; margin-top: 4px; }
+                .letter-body { margin: 28px 0; font-size: 14px; line-height: 1.6; color: #2b2b2b; }
+                .optional-field { margin: 12px 0; padding: 8px 0; border-bottom: 1px dashed #e0e0e0; }
+                .optional-field strong { color: #1f3d2b; }
+                .letter-footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #e0e0e0; font-size: 10px; color: #6f7b74; text-align: center; }
+                @media print { body { margin: 0; padding: 0; } .letterhead-container { padding: 0.5cm; } .watermark-print { opacity: 0.08; } .text-watermark-print { opacity: 0.15 !important; } }
+            </style>
+            </head>
+            <body>
+            <div class="letterhead-container">
+                <div class="watermark-print"></div>
+                ${textWatermarkDiv}
+                <div class="letterhead-header">
+                    <div class="header-left">
+                        <img src="${logoUrlFinal}" class="preview-logo-print" alt="Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2248%22 fill=%22%231f3d2b%22/%3E%3Ctext x=%2250%22 y=%2267%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2242%22 font-family=%22Arial%22%3EHC%3C/text%3E%3C/svg%3E'">
+                        <div><div class="company-title">${escapeHtml(company)}</div><div class="company-tagline">${escapeHtml(tagline)}</div></div>
+                    </div>
+                    <div class="header-right">
+                        <div>${escapeHtml(addr1)}<br>${escapeHtml(addr2)}<br>${escapeHtml(city)}</div>
+                        <div class="gst-pan">GSTIN: ${escapeHtml(gst)} | PAN: ${escapeHtml(panNum)}</div>
+                        <div><i class="fas fa-phone"></i> ${escapeHtml(phoneVal)} &nbsp;|&nbsp; <i class="fas fa-envelope"></i> ${escapeHtml(emailVal)}<br><i class="fas fa-globe"></i> ${escapeHtml(websiteVal)}</div>
+                    </div>
+                </div>
+                <div class="letter-body">
+                    ${optionalPrint}
+                    ${letterBodyHtml}
+                </div>
+                <div class="letter-footer">
+                    ${escapeHtml(footerNoteVal)}<br>
+                    <span style="font-size:9px;">Computer Generated Document | Subject to Kolkata jurisdiction</span>
+                </div>
+            </div>
+            </body>
+            </html>`;
         }
-
+        
         async function generatePDF() {
             const confirmBtn = document.getElementById('confirmExportBtn');
             confirmBtn.disabled = true;
-            showToast('Generating PDF...', 'info');
+            showToast('Generating letterhead PDF...', 'info');
             try {
                 const html = getPrintHtml();
                 const tempDiv = document.createElement('div');
-                tempDiv.style.position = 'absolute'; tempDiv.style.left = '-9999px'; tempDiv.style.width = '800px'; tempDiv.style.background = 'white';
+                tempDiv.style.position = 'absolute'; tempDiv.style.left = '-9999px'; tempDiv.style.top = '0';
+                tempDiv.style.width = '800px'; tempDiv.style.background = 'white';
                 tempDiv.innerHTML = html;
                 document.body.appendChild(tempDiv);
                 await new Promise(r => setTimeout(r, 500));
-                const target = tempDiv.querySelector('.letter-container');
+                const target = tempDiv.querySelector('.letterhead-container');
                 if(!target) throw new Error('Container missing');
-                const canvas = await html2canvas(target, { scale: 2.5, useCORS: true, backgroundColor: '#ffffff' });
+                const canvas = await html2canvas(target, { scale: 2.5, useCORS: true, backgroundColor: '#ffffff', logging: false });
                 document.body.removeChild(tempDiv);
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const imgWidth = 210;
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
                 pdf.addImage(canvas, 'PNG', 0, 0, imgWidth, imgHeight);
-                pdf.save(`Halder_Letterhead.pdf`);
+                pdf.save(`Halder_Letterhead_Standard.pdf`);
                 confirmBtn.disabled = false;
                 exportModal.classList.remove('active');
                 showToast('PDF downloaded');
-            } catch(e) { console.error(e); confirmBtn.disabled=false; showToast('PDF error', 'error'); }
+            } catch(err) { console.error(err); confirmBtn.disabled = false; showToast('PDF error', 'error'); }
         }
         function directPrint() { const win = window.open(); win.document.write(getPrintHtml()); win.document.close(); win.print(); exportModal.classList.remove('active'); }
         function showPreview() { const modal = document.getElementById('printPreviewModal'); document.getElementById('printPreviewContent').innerHTML = getPrintHtml(); modal.classList.add('active'); document.getElementById('doPrintBtn').onclick = () => window.print(); document.getElementById('closePrintPreviewBtn').onclick = () => modal.classList.remove('active'); exportModal.classList.remove('active'); }
         document.getElementById('confirmExportBtn').onclick = () => { if(selectedType === 'print') directPrint(); else if(selectedType === 'pdf') generatePDF(); else if(selectedType === 'preview') showPreview(); selectedType = null; document.getElementById('confirmExportBtn').disabled = true; };
-
-        // Initial load
+        
+        // Initialization
         if(!loadFromStorage()) {
-            for(let key of Object.keys(fields)) {
-                if(fields[key] && defaultData[key] !== undefined) {
-                    if(fields[key].type === 'checkbox') fields[key].checked = defaultData[key];
-                    else fields[key].value = defaultData[key];
-                }
-            }
+            for(let key of Object.keys(fields)) if(fields[key] && defaultData[key] !== undefined) fields[key].value = defaultData[key];
+            document.getElementById('showSubject').checked = true;
+            document.getElementById('showReference').checked = true;
+            document.getElementById('showAttachments').checked = false;
+            document.getElementById('showAttention').checked = false;
         }
+        toggleOptionalFieldsVisibility();
+        toggleTextWatermarkSettings();
         updatePreview();
-        setTimeout(() => showToast('Enhanced Letterhead System Ready', 'info'), 800);
+        setTimeout(() => showToast('Letterhead System Ready | Rich text & optional fields active', 'info'), 800);
     });
 </script>
 </body>
