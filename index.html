@@ -822,7 +822,7 @@
             };
         });
         
-        // NEW: getPrintHtml aligned with Estimate system format
+        // Refined getPrintHtml - Clean company letterhead, no extra sections
         function getPrintHtml() {
             // Capture current letterhead data
             const company = fields.companyName.value.trim() || defaultData.companyName;
@@ -839,7 +839,7 @@
             const footerNoteVal = fields.footerNote.value.trim() || defaultData.footerNote;
             const logoUrlFinal = fields.logoUrl.value.trim() || "34391.png";
             
-            // Build HTML that replicates Estimate system's layout, styling, and structure
+            // Build clean letterhead HTML without recipient block, bank details, signature, etc.
             return `<!DOCTYPE html>
             <html>
             <head>
@@ -861,17 +861,15 @@
                         line-height: 1.5;
                         color: #2b2b2b;
                     }
-                    .estimate-preview-container {
+                    .letterhead-container {
                         max-width: 100%;
                         background: white;
-                        border-radius: 12px;
-                        box-shadow: 0 8px 24px rgba(0,0,0,0.05);
-                        padding: 28px;
+                        border-radius: 4px;
+                        padding: 0;
                         position: relative;
-                        overflow: hidden;
                     }
                     .watermark-print {
-                        position: absolute;
+                        position: fixed;
                         top: 50%;
                         left: 50%;
                         transform: translate(-50%, -50%) rotate(-25deg);
@@ -884,18 +882,19 @@
                         background-position: center;
                         filter: grayscale(100%);
                         background-image: url('${logoUrlFinal}');
+                        z-index: 0;
                     }
-                    .estimate-header-preview {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: flex-start;
-                        flex-wrap: wrap;
-                        gap: 16px;
-                        margin-bottom: 24px;
-                        padding-bottom: 12px;
+                    .letterhead-header {
                         border-bottom: 2px solid #1f3d2b;
+                        padding-bottom: 20px;
+                        margin-bottom: 28px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: space-between;
+                        align-items: center;
+                        gap: 20px;
                     }
-                    .header-left {
+                    .logo-area-header {
                         display: flex;
                         align-items: center;
                         gap: 16px;
@@ -920,68 +919,41 @@
                         font-size: 12px;
                         color: #6f7b74;
                     }
-                    .estimate-meta {
+                    .address-block {
                         text-align: right;
-                        font-size: 11px;
+                        font-size: 12px;
+                        line-height: 1.4;
                         color: #5a5a5a;
                     }
-                    .addresses-preview {
-                        display: flex;
-                        gap: 16px;
-                        margin-bottom: 24px;
-                        flex-wrap: wrap;
+                    .address-block p {
+                        margin: 2px 0;
                     }
-                    .address-box {
-                        flex: 1;
-                        background: #f6f4ef;
-                        padding: 14px;
-                        border-radius: 12px;
-                        border-left: 4px solid #1f3d2b;
-                    }
-                    .address-title {
-                        font-weight: 700;
+                    .gst-line {
+                        font-weight: 600;
                         color: #1f3d2b;
-                        margin-bottom: 8px;
-                        font-size: 14px;
+                        font-size: 11px;
                     }
-                    .letter-content {
+                    .letter-body {
                         margin: 28px 0;
-                        background: white;
-                        padding: 8px 0;
                         font-size: 14px;
                         line-height: 1.6;
+                        color: #2b2b2b;
+                        min-height: 250px;
                     }
-                    .authorization {
+                    .letter-footer {
                         margin-top: 32px;
-                        display: flex;
-                        justify-content: space-between;
-                        flex-wrap: wrap;
-                        gap: 16px;
+                        padding-top: 16px;
                         border-top: 1px solid #e0e0e0;
-                        padding-top: 20px;
-                    }
-                    .signature {
-                        text-align: center;
-                    }
-                    .signature-line {
-                        width: 160px;
-                        border-bottom: 1.5px solid #1f3d2b;
-                        margin: 0 auto 6px;
-                        padding-top: 30px;
-                    }
-                    .footer-note {
-                        text-align: center;
-                        margin-top: 24px;
                         font-size: 10px;
                         color: #6f7b74;
+                        text-align: center;
                     }
                     @media print {
                         body {
                             margin: 0;
                             padding: 0;
                         }
-                        .estimate-preview-container {
-                            box-shadow: none;
+                        .letterhead-container {
                             padding: 0.5cm;
                         }
                         .watermark-print {
@@ -991,50 +963,31 @@
                 </style>
             </head>
             <body>
-            <div class="estimate-preview-container">
+            <div class="letterhead-container">
                 <div class="watermark-print"></div>
-                <div class="estimate-header-preview">
-                    <div class="header-left">
+                <div class="letterhead-header">
+                    <div class="logo-area-header">
                         <img src="${logoUrlFinal}" class="preview-logo-print" alt="Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2248%22 fill=%22%231f3d2b%22/%3E%3Ctext x=%2250%22 y=%2267%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2242%22 font-family=%22Arial%22%3EHC%3C/text%3E%3C/svg%3E'">
                         <div>
                             <div class="company-title">${escapeHtml(company)}</div>
                             <div class="company-tagline">${escapeHtml(tagline)}</div>
                         </div>
                     </div>
-                    <div class="estimate-meta">
-                        <p><strong>LETTERHEAD</strong> | Official Communication</p>
-                        <p>Date: ${new Date().toLocaleDateString('en-GB')}</p>
+                    <div class="address-block">
+                        <p>${escapeHtml(addr1)}</p>
+                        <p>${escapeHtml(addr2)}</p>
+                        <p>${escapeHtml(city)}</p>
+                        <p class="gst-line">GSTIN: ${escapeHtml(gst)} | PAN: ${escapeHtml(panNum)}</p>
+                        <p><i class="fas fa-phone"></i> ${escapeHtml(phoneVal)} &nbsp;|&nbsp; <i class="fas fa-envelope"></i> ${escapeHtml(emailVal)}</p>
+                        <p><i class="fas fa-globe"></i> ${escapeHtml(websiteVal)}</p>
                     </div>
                 </div>
-                <div class="addresses-preview">
-                    <div class="address-box">
-                        <div class="address-title">FROM (REGISTERED OFFICE)</div>
-                        <div>${escapeHtml(addr1)}<br>${escapeHtml(addr2)}<br>${escapeHtml(city)}</div>
-                        <div style="margin-top:8px;"><strong>GSTIN:</strong> ${escapeHtml(gst)}<br><strong>PAN:</strong> ${escapeHtml(panNum)}</div>
-                        <div style="margin-top:6px;"><i class="fas fa-phone"></i> ${escapeHtml(phoneVal)}<br><i class="fas fa-envelope"></i> ${escapeHtml(emailVal)}<br><i class="fas fa-globe"></i> ${escapeHtml(websiteVal)}</div>
-                    </div>
-                    <div class="address-box">
-                        <div class="address-title">TO (RECIPIENT)</div>
-                        <div id="recipientBlock">[As per communication]</div>
-                    </div>
-                </div>
-                <div class="letter-content">
+                <div class="letter-body">
                     ${letterBodyHtml}
                 </div>
-                <div class="authorization">
-                    <div>
-                        <p><strong>Bank Details:</strong> HALDER & CO, A/C: 50200119707544, IFSC: HDFC0008949</p>
-                        <p><strong>State Code:</strong> 19 (West Bengal) | <strong>Jurisdiction:</strong> Kolkata</p>
-                        <p><strong>Footer Note:</strong> ${escapeHtml(footerNoteVal)}</p>
-                    </div>
-                    <div class="signature">
-                        <div class="signature-line"></div>
-                        <div><strong>Authorised Signatory</strong></div>
-                        <div>Halder & Co.</div>
-                    </div>
-                </div>
-                <div class="footer-note">
-                    This is a computer generated letterhead – valid without signature | Subject to Kolkata jurisdiction
+                <div class="letter-footer">
+                    ${escapeHtml(footerNoteVal)}<br>
+                    State Code: 19 (West Bengal) | Computer Generated Document
                 </div>
             </div>
             </body>
@@ -1048,15 +1001,13 @@
                 if(m === '<') return '&lt;';
                 if(m === '>') return '&gt;';
                 return m;
-            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-                return c;
             });
         }
         
         async function generatePDF() {
             const confirmBtn = document.getElementById('confirmExportBtn');
             confirmBtn.disabled = true;
-            showToast('Generating PDF in Estimate format...', 'info');
+            showToast('Generating clean letterhead PDF...', 'info');
             try {
                 const html = getPrintHtml();
                 const tempDiv = document.createElement('div');
@@ -1068,8 +1019,8 @@
                 tempDiv.innerHTML = html;
                 document.body.appendChild(tempDiv);
                 await new Promise(r => setTimeout(r, 500));
-                const target = tempDiv.querySelector('.estimate-preview-container');
-                if(!target) throw new Error('Preview container missing');
+                const target = tempDiv.querySelector('.letterhead-container');
+                if(!target) throw new Error('Letterhead container missing');
                 const canvas = await html2canvas(target, { scale: 2.5, useCORS: true, backgroundColor: '#ffffff', logging: false });
                 document.body.removeChild(tempDiv);
                 const { jsPDF } = window.jspdf;
@@ -1077,10 +1028,10 @@
                 const imgWidth = 210;
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
                 pdf.addImage(canvas, 'PNG', 0, 0, imgWidth, imgHeight);
-                pdf.save(`Halder_Letterhead_EstimateStyle.pdf`);
+                pdf.save(`Halder_Letterhead_Official.pdf`);
                 confirmBtn.disabled = false;
                 exportModal.classList.remove('active');
-                showToast('PDF downloaded (Estimate format)');
+                showToast('PDF downloaded (clean letterhead format)');
             } catch(err) {
                 console.error(err);
                 confirmBtn.disabled = false;
@@ -1121,7 +1072,7 @@
             }
         }
         updatePreview();
-        setTimeout(() => showToast('Letterhead System Ready | Export now matches Estimate format', 'info'), 800);
+        setTimeout(() => showToast('Letterhead System Ready | Export follows official letterhead standards', 'info'), 800);
     });
 </script>
 </body>
