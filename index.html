@@ -407,6 +407,52 @@
             min-width: 120px;
         }
 
+        /* Premium Rich Text Toolbar Styles */
+        .rich-text-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+            padding: 8px 10px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .toolbar-btn {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-dark);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+            font-weight: 500;
+        }
+        .toolbar-btn i {
+            font-size: 14px;
+        }
+        .toolbar-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .toolbar-divider {
+            width: 1px;
+            background: var(--border);
+            margin: 0 4px;
+        }
+        .char-counter {
+            font-size: 11px;
+            color: var(--muted);
+            text-align: right;
+            margin-top: 6px;
+        }
+
         /* Modal styles (exactly matching invoice system) */
         .modal-overlay {
             position: fixed;
@@ -594,10 +640,31 @@
                     <input type="text" id="website">
                 </div>
             </div>
+            
+            <!-- ENHANCED: Premium Letter Body Section with Rich Text Toolbar -->
             <div class="form-group">
-                <label>Letter Body / Message Content</label>
-                <textarea id="letterBody" rows="5" placeholder="Type your letter content here..."></textarea>
+                <label>Letter Body / Message Content <span style="font-weight:normal; font-size:12px;">(Rich text supported)</span></label>
+                <div class="rich-text-toolbar">
+                    <button type="button" class="toolbar-btn" data-format="bold" title="Bold"><i class="fas fa-bold"></i></button>
+                    <button type="button" class="toolbar-btn" data-format="italic" title="Italic"><i class="fas fa-italic"></i></button>
+                    <button type="button" class="toolbar-btn" data-format="underline" title="Underline"><i class="fas fa-underline"></i></button>
+                    <span class="toolbar-divider"></span>
+                    <button type="button" class="toolbar-btn" data-format="h3" title="Heading"><i class="fas fa-heading"></i> H3</button>
+                    <button type="button" class="toolbar-btn" data-format="p" title="Paragraph"><i class="fas fa-paragraph"></i> P</button>
+                    <span class="toolbar-divider"></span>
+                    <button type="button" class="toolbar-btn" data-format="ul" title="Bullet List"><i class="fas fa-list-ul"></i></button>
+                    <button type="button" class="toolbar-btn" data-format="ol" title="Numbered List"><i class="fas fa-list-ol"></i></button>
+                    <span class="toolbar-divider"></span>
+                    <button type="button" class="toolbar-btn" data-format="alignLeft" title="Align Left"><i class="fas fa-align-left"></i></button>
+                    <button type="button" class="toolbar-btn" data-format="alignCenter" title="Align Center"><i class="fas fa-align-center"></i></button>
+                    <button type="button" class="toolbar-btn" data-format="alignRight" title="Align Right"><i class="fas fa-align-right"></i></button>
+                    <span class="toolbar-divider"></span>
+                    <button type="button" class="toolbar-btn" id="clearFormattingBtn" title="Clear Formatting"><i class="fas fa-eraser"></i></button>
+                </div>
+                <textarea id="letterBody" rows="8" placeholder="Compose your letter content here... Use the toolbar to add formatting (HTML supported)."></textarea>
+                <div class="char-counter" id="letterBodyCounter">0 characters</div>
             </div>
+            
             <div class="form-group">
                 <label>Footer Note (optional)</label>
                 <input type="text" id="footerNote" placeholder="e.g., Regd. Office & Corporate communication">
@@ -775,6 +842,7 @@
                 preview.logoImg.src = "34391.png";
             }
             saveToStorage(false);
+            updateCharCounter();
         }
         
         function resetAll() {
@@ -796,6 +864,102 @@
             setTimeout(() => toastDiv.classList.add('show'), 10);
             setTimeout(() => { toastDiv.classList.remove('show'); setTimeout(()=>toastDiv.remove(), 300); }, 3000);
         }
+        
+        // Rich text formatting helpers
+        function getSelectionStartEnd(textarea) {
+            return { start: textarea.selectionStart, end: textarea.selectionEnd };
+        }
+        
+        function wrapText(tag, openTag, closeTag) {
+            const textarea = fields.letterBody;
+            const { start, end } = getSelectionStartEnd(textarea);
+            const selectedText = textarea.value.substring(start, end);
+            if (selectedText) {
+                const newText = textarea.value.substring(0, start) + openTag + selectedText + closeTag + textarea.value.substring(end);
+                textarea.value = newText;
+                textarea.setSelectionRange(start + openTag.length, end + openTag.length);
+            } else {
+                // Insert placeholder
+                const placeholder = openTag + 'text' + closeTag;
+                const newText = textarea.value.substring(0, start) + placeholder + textarea.value.substring(end);
+                textarea.value = newText;
+                textarea.setSelectionRange(start + openTag.length, start + openTag.length + 4);
+            }
+            textarea.focus();
+            updatePreview();
+        }
+        
+        function applyList(type) {
+            const textarea = fields.letterBody;
+            const { start, end } = getSelectionStartEnd(textarea);
+            const selectedText = textarea.value.substring(start, end);
+            if (!selectedText) return;
+            const lines = selectedText.split(/\r?\n/);
+            const formattedLines = lines.map((line, idx) => {
+                if (type === 'ul') return `• ${line}`;
+                else return `${idx+1}. ${line}`;
+            });
+            const newText = textarea.value.substring(0, start) + formattedLines.join('\n') + textarea.value.substring(end);
+            textarea.value = newText;
+            textarea.setSelectionRange(start, start + formattedLines.join('\n').length);
+            textarea.focus();
+            updatePreview();
+        }
+        
+        function applyAlignment(align) {
+            const textarea = fields.letterBody;
+            const { start, end } = getSelectionStartEnd(textarea);
+            const selectedText = textarea.value.substring(start, end);
+            if (!selectedText) return;
+            const alignedText = `<div style="text-align:${align};">${selectedText}</div>`;
+            const newText = textarea.value.substring(0, start) + alignedText + textarea.value.substring(end);
+            textarea.value = newText;
+            textarea.setSelectionRange(start + alignedText.length - selectedText.length - 6, start + alignedText.length - 6);
+            textarea.focus();
+            updatePreview();
+        }
+        
+        function clearFormatting() {
+            const textarea = fields.letterBody;
+            let rawText = textarea.value;
+            // Remove HTML tags
+            rawText = rawText.replace(/<[^>]*>/g, '');
+            // Remove markdown-like list markers
+            rawText = rawText.replace(/^\s*[\d]+\.\s+/gm, '');
+            rawText = rawText.replace(/^\s*[•\-]\s+/gm, '');
+            textarea.value = rawText;
+            updatePreview();
+            showToast('Formatting cleared', 'info');
+        }
+        
+        function updateCharCounter() {
+            const text = fields.letterBody.value;
+            const charCount = text.length;
+            const counter = document.getElementById('letterBodyCounter');
+            if (counter) counter.innerText = `${charCount} characters${charCount > 2000 ? ' (long content)' : ''}`;
+        }
+        
+        // Attach toolbar event listeners
+        const toolbarBtns = document.querySelectorAll('.toolbar-btn[data-format]');
+        toolbarBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const format = btn.dataset.format;
+                switch(format) {
+                    case 'bold': wrapText('b', '<strong>', '</strong>'); break;
+                    case 'italic': wrapText('i', '<em>', '</em>'); break;
+                    case 'underline': wrapText('u', '<u>', '</u>'); break;
+                    case 'h3': wrapText('h3', '<h3>', '</h3>'); break;
+                    case 'p': wrapText('p', '<p>', '</p>'); break;
+                    case 'ul': applyList('ul'); break;
+                    case 'ol': applyList('ol'); break;
+                    case 'alignLeft': applyAlignment('left'); break;
+                    case 'alignCenter': applyAlignment('center'); break;
+                    case 'alignRight': applyAlignment('right'); break;
+                }
+            });
+        });
+        document.getElementById('clearFormattingBtn')?.addEventListener('click', (e) => { e.preventDefault(); clearFormatting(); });
         
         // Attach input listeners
         for(let key of Object.keys(fields)) {
@@ -822,9 +986,8 @@
             };
         });
         
-        // REFINED getPrintHtml – Standard Company Letterhead (no TO box, no bank details, no signature line)
+        // Refined getPrintHtml – Standard Company Letterhead (no TO box, no bank details, no signature line)
         function getPrintHtml() {
-            // Capture current letterhead data
             const company = fields.companyName.value.trim() || defaultData.companyName;
             const tagline = fields.tagline.value.trim() || defaultData.tagline;
             const addr1 = fields.addressLine1.value.trim() || defaultData.addressLine1;
@@ -835,11 +998,10 @@
             const phoneVal = fields.phone.value.trim() || defaultData.phone;
             const emailVal = fields.email.value.trim() || defaultData.email;
             const websiteVal = fields.website.value.trim() || defaultData.website;
-            const letterBodyHtml = fields.letterBody.value.trim() ? fields.letterBody.value.trim().replace(/\n/g,'<br>') : defaultData.letterBody.replace(/\n/g,'<br>');
+            const letterBodyHtml = fields.letterBody.value.trim() ? fields.letterBody.value.trim() : defaultData.letterBody;
             const footerNoteVal = fields.footerNote.value.trim() || defaultData.footerNote;
             const logoUrlFinal = fields.logoUrl.value.trim() || "34391.png";
             
-            // Build clean, standard letterhead HTML (no extra boxes, no bank details, no signature line)
             return `<!DOCTYPE html>
             <html>
             <head>
@@ -848,120 +1010,21 @@
                 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
                 <style>
-                    * {
-                        margin: 0;
-                        padding: 0;
-                        box-sizing: border-box;
-                    }
-                    body {
-                        font-family: 'Source Sans 3', sans-serif;
-                        background: white;
-                        margin: 20mm;
-                        font-size: 14px;
-                        line-height: 1.5;
-                        color: #2b2b2b;
-                    }
-                    .letterhead-container {
-                        max-width: 100%;
-                        background: white;
-                        position: relative;
-                        overflow: hidden;
-                    }
-                    .watermark-print {
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%) rotate(-25deg);
-                        opacity: 0.04;
-                        pointer-events: none;
-                        width: 350px;
-                        height: 350px;
-                        background-size: contain;
-                        background-repeat: no-repeat;
-                        background-position: center;
-                        filter: grayscale(100%);
-                        background-image: url('${logoUrlFinal}');
-                    }
-                    .letterhead-header {
-                        border-bottom: 2px solid #1f3d2b;
-                        padding-bottom: 20px;
-                        margin-bottom: 24px;
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: space-between;
-                        align-items: flex-start;
-                        gap: 20px;
-                    }
-                    .header-left {
-                        display: flex;
-                        align-items: center;
-                        gap: 16px;
-                        flex-wrap: wrap;
-                    }
-                    .preview-logo-print {
-                        width: 70px;
-                        height: 70px;
-                        border-radius: 50%;
-                        object-fit: cover;
-                        border: 1px solid #e0e0e0;
-                    }
-                    .company-title {
-                        font-family: 'Cormorant Garamond', serif;
-                        font-size: 28px;
-                        font-weight: 700;
-                        color: #1f3d2b;
-                        letter-spacing: 1px;
-                        margin-bottom: 6px;
-                    }
-                    .company-tagline {
-                        font-size: 12px;
-                        color: #6f7b74;
-                    }
-                    .header-right {
-                        text-align: right;
-                        font-size: 12px;
-                        color: #5a5a5a;
-                        line-height: 1.4;
-                    }
-                    .address-block {
-                        margin-top: 8px;
-                        font-size: 12px;
-                        line-height: 1.4;
-                        color: #5a5a5a;
-                        text-align: right;
-                    }
-                    .gst-pan {
-                        font-weight: 600;
-                        color: #1f3d2b;
-                        font-size: 11px;
-                        margin-top: 4px;
-                    }
-                    .letter-body {
-                        margin: 28px 0;
-                        font-size: 14px;
-                        line-height: 1.6;
-                        color: #2b2b2b;
-                    }
-                    .letter-footer {
-                        margin-top: 32px;
-                        padding-top: 16px;
-                        border-top: 1px solid #e0e0e0;
-                        font-size: 10px;
-                        color: #6f7b74;
-                        text-align: center;
-                    }
-                    @media print {
-                        body {
-                            margin: 0;
-                            padding: 0;
-                        }
-                        .letterhead-container {
-                            padding: 0.5cm;
-                        }
-                        .watermark-print {
-                            opacity: 0.08;
-                        }
-                    }
+                    * { margin:0; padding:0; box-sizing:border-box; }
+                    body { font-family: 'Source Sans 3', sans-serif; background: white; margin: 20mm; font-size: 14px; line-height: 1.5; color: #2b2b2b; }
+                    .letterhead-container { max-width: 100%; background: white; position: relative; overflow: hidden; }
+                    .watermark-print { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-25deg); opacity: 0.04; pointer-events: none; width: 350px; height: 350px; background-size: contain; background-repeat: no-repeat; background-position: center; filter: grayscale(100%); background-image: url('${logoUrlFinal}'); }
+                    .letterhead-header { border-bottom: 2px solid #1f3d2b; padding-bottom: 20px; margin-bottom: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 20px; }
+                    .header-left { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+                    .preview-logo-print { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 1px solid #e0e0e0; }
+                    .company-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; color: #1f3d2b; letter-spacing: 1px; margin-bottom: 6px; }
+                    .company-tagline { font-size: 12px; color: #6f7b74; }
+                    .header-right { text-align: right; font-size: 12px; color: #5a5a5a; line-height: 1.4; }
+                    .address-block { margin-top: 8px; font-size: 12px; line-height: 1.4; color: #5a5a5a; text-align: right; }
+                    .gst-pan { font-weight: 600; color: #1f3d2b; font-size: 11px; margin-top: 4px; }
+                    .letter-body { margin: 28px 0; font-size: 14px; line-height: 1.6; color: #2b2b2b; }
+                    .letter-footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #e0e0e0; font-size: 10px; color: #6f7b74; text-align: center; }
+                    @media print { body { margin: 0; padding: 0; } .letterhead-container { padding: 0.5cm; } .watermark-print { opacity: 0.08; } }
                 </style>
             </head>
             <body>
@@ -1071,7 +1134,7 @@
             }
         }
         updatePreview();
-        setTimeout(() => showToast('Letterhead System Ready | Export uses standard company letterhead format', 'info'), 800);
+        setTimeout(() => showToast('Letterhead System Ready | Rich text editor active', 'info'), 800);
     });
 </script>
 </body>
