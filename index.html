@@ -184,7 +184,7 @@
         .toolbar-divider { width: 1px; background: var(--border); margin: 0 4px; }
         .char-counter { font-size: 11px; color: var(--muted); text-align: right; margin-top: 6px; }
 
-        /* Modal & Toast (same as invoice) */
+        /* Modal & Toast */
         .modal-overlay {
             position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.5);
             backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
@@ -273,7 +273,13 @@
             </div>
             <div class="row">
                 <div class="form-group"><label>Email</label><input type="email" id="email"></div>
-                <div class="form-group"><label>Website</label><input type="text" id="website"></div>
+                <div class="form-group">
+                    <label>Website</label>
+                    <input type="text" id="website" placeholder="https://...">
+                    <div class="checkbox-group" style="margin-top: 8px;">
+                        <input type="checkbox" id="showWebsite" checked> <label>Show Website</label>
+                    </div>
+                </div>
             </div>
             
             <!-- Optional Fields Section (toggleable) -->
@@ -361,7 +367,7 @@
                         <p id="previewCityPin">Kolkata – 700046, West Bengal, India.</p>
                         <p class="gst-pan-line" id="previewGstPan">GSTIN: 19AASFH5716J1ZS | PAN: AASFH5716J</p>
                         <p><i class="fas fa-phone"></i> <span id="previewPhone">+91 98317 76985</span> &nbsp;|&nbsp; <i class="fas fa-envelope"></i> <span id="previewEmail">halderandco.traders@gmail.com</span></p>
-                        <p id="previewWebsite" style="font-size:11px;">https://halderandco.github.io/</p>
+                        <p id="previewWebsiteLine"><i class="fas fa-globe"></i> <span id="previewWebsite">https://halderandco.github.io/</span></p>
                     </div>
                 </div>
                 <div class="letterhead-body">
@@ -387,7 +393,7 @@
     <p style="font-size: 11px; margin-top: 5px;">&copy; <span id="currentYear"></span> Halder & Co. | All rights reserved</p>
 </div>
 
-<!-- Export Modal (same as invoice) -->
+<!-- Export Modal -->
 <div class="modal-overlay" id="exportModal">
     <div class="export-modal">
         <div class="modal-header"><h3>Export Letterhead</h3><button id="closeModalBtn" style="background:none; border:none; font-size:24px;">&times;</button></div>
@@ -444,6 +450,7 @@
             phone: document.getElementById('previewPhone'),
             email: document.getElementById('previewEmail'),
             website: document.getElementById('previewWebsite'),
+            websiteLine: document.getElementById('previewWebsiteLine'),
             letterBody: document.getElementById('previewLetterBody'),
             footerNote: document.getElementById('previewFooterNote'),
             logoImg: document.getElementById('previewLogoImg'),
@@ -481,6 +488,7 @@
                         if(data[key] !== undefined && fields[key]) fields[key].value = data[key];
                     }
                     // checkbox states
+                    if(data.showWebsite !== undefined) document.getElementById('showWebsite').checked = data.showWebsite;
                     if(data.showSubject !== undefined) document.getElementById('showSubject').checked = data.showSubject;
                     if(data.showReference !== undefined) document.getElementById('showReference').checked = data.showReference;
                     if(data.showAttachments !== undefined) document.getElementById('showAttachments').checked = data.showAttachments;
@@ -503,6 +511,7 @@
             for(let key of Object.keys(fields)) {
                 if(fields[key]) data[key] = fields[key].value;
             }
+            data.showWebsite = document.getElementById('showWebsite').checked;
             data.showSubject = document.getElementById('showSubject').checked;
             data.showReference = document.getElementById('showReference').checked;
             data.showAttachments = document.getElementById('showAttachments').checked;
@@ -543,7 +552,17 @@
             preview.gstPan.innerText = (gstVal || panVal) ? `GSTIN: ${gstVal || '—'} | PAN: ${panVal || '—'}` : "GSTIN: 19AASFH5716J1ZS | PAN: AASFH5716J";
             preview.phone.innerText = fields.phone.value.trim() || defaultData.phone;
             preview.email.innerText = fields.email.value.trim() || defaultData.email;
-            preview.website.innerText = fields.website.value.trim() || defaultData.website;
+            
+            // Website field: optional
+            const showWebsite = document.getElementById('showWebsite').checked;
+            const websiteVal = fields.website.value.trim() || defaultData.website;
+            if (showWebsite && websiteVal) {
+                preview.website.innerText = websiteVal;
+                preview.websiteLine.style.display = 'block';
+            } else {
+                preview.websiteLine.style.display = 'none';
+            }
+            
             let bodyText = fields.letterBody.value.trim();
             preview.letterBody.innerHTML = bodyText ? bodyText.replace(/\n/g,'<br>') : defaultData.letterBody.replace(/\n/g,'<br>');
             preview.footerNote.innerText = fields.footerNote.value.trim() || defaultData.footerNote;
@@ -603,6 +622,7 @@
                     if(fields[key] && defaultData[key] !== undefined) fields[key].value = defaultData[key];
                     else if(fields[key] && key === 'logoUrl') fields[key].value = defaultData.logoUrl;
                 }
+                document.getElementById('showWebsite').checked = true;
                 document.getElementById('showSubject').checked = true;
                 document.getElementById('showReference').checked = true;
                 document.getElementById('showAttachments').checked = false;
@@ -629,7 +649,7 @@
             setTimeout(() => { toastDiv.classList.remove('show'); setTimeout(()=>toastDiv.remove(), 300); }, 3000);
         }
         
-        // Rich text helpers (same as invoice)
+        // Rich text helpers
         function wrapText(tag, openTag, closeTag) {
             const textarea = fields.letterBody;
             const start = textarea.selectionStart, end = textarea.selectionEnd;
@@ -707,6 +727,7 @@
         document.getElementById('resetForm').addEventListener('click', resetAll);
         document.getElementById('toggleOptionalFields').addEventListener('change', toggleOptionalFieldsVisibility);
         document.getElementById('toggleTextWatermark').addEventListener('change', toggleTextWatermarkSettings);
+        document.getElementById('showWebsite').addEventListener('change', updatePreview);
         document.getElementById('showSubject').addEventListener('change', updatePreview);
         document.getElementById('showReference').addEventListener('change', updatePreview);
         document.getElementById('showAttachments').addEventListener('change', updatePreview);
@@ -715,7 +736,7 @@
             document.getElementById(id).addEventListener('input', updatePreview);
         });
         
-        // Export modal (identical to invoice system)
+        // Export modal logic
         const exportModal = document.getElementById('exportModal');
         const exportBtn = document.getElementById('exportLetterhead');
         let selectedType = null;
@@ -731,6 +752,7 @@
             };
         });
         
+        // Updated getPrintHtml with optional website and footer at bottom using flex min-height
         function getPrintHtml() {
             const company = fields.companyName.value.trim() || defaultData.companyName;
             const tagline = fields.tagline.value.trim() || defaultData.tagline;
@@ -742,6 +764,7 @@
             const phoneVal = fields.phone.value.trim() || defaultData.phone;
             const emailVal = fields.email.value.trim() || defaultData.email;
             const websiteVal = fields.website.value.trim() || defaultData.website;
+            const showWebsite = document.getElementById('showWebsite').checked;
             const letterBodyHtml = fields.letterBody.value.trim() ? fields.letterBody.value : defaultData.letterBody;
             const footerNoteVal = fields.footerNote.value.trim() || defaultData.footerNote;
             const logoUrlFinal = fields.logoUrl.value.trim() || "34391.png";
@@ -774,11 +797,39 @@
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
             <style>
                 * { margin:0; padding:0; box-sizing:border-box; }
-                body { font-family: 'Source Sans 3', sans-serif; background: white; margin: 20mm; font-size: 14px; line-height: 1.5; color: #2b2b2b; }
-                .letterhead-container { max-width: 100%; background: white; position: relative; overflow: hidden; }
-                .watermark-print { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-25deg); opacity: 0.04; pointer-events: none; width: 350px; height: 350px; background-size: contain; background-repeat: no-repeat; background-position: center; filter: grayscale(100%); background-image: url('${logoUrlFinal}'); }
+                body { 
+                    font-family: 'Source Sans 3', sans-serif; 
+                    background: white; 
+                    margin: 20mm; 
+                    font-size: 14px; 
+                    line-height: 1.5; 
+                    color: #2b2b2b;
+                    min-height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .letterhead-container { 
+                    max-width: 100%; 
+                    background: white; 
+                    position: relative; 
+                    overflow: hidden;
+                    width: 100%;
+                    min-height: calc(100vh - 40mm);
+                    display: flex;
+                    flex-direction: column;
+                }
+                .watermark-print { 
+                    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-25deg); 
+                    opacity: 0.04; pointer-events: none; width: 350px; height: 350px; 
+                    background-size: contain; background-repeat: no-repeat; background-position: center; 
+                    filter: grayscale(100%); background-image: url('${logoUrlFinal}'); 
+                }
                 ${textWatermarkStyle}
-                .letterhead-header { border-bottom: 2px solid #1f3d2b; padding-bottom: 20px; margin-bottom: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 20px; }
+                .letterhead-header { 
+                    border-bottom: 2px solid #1f3d2b; padding-bottom: 20px; margin-bottom: 24px; 
+                    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 20px; 
+                }
                 .header-left { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
                 .preview-logo-print { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 1px solid #e0e0e0; }
                 .company-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; color: #1f3d2b; letter-spacing: 1px; margin-bottom: 6px; }
@@ -786,11 +837,30 @@
                 .header-right { text-align: right; font-size: 12px; color: #5a5a5a; line-height: 1.4; }
                 .address-block { margin-top: 8px; font-size: 12px; line-height: 1.4; color: #5a5a5a; text-align: right; }
                 .gst-pan { font-weight: 600; color: #1f3d2b; font-size: 11px; margin-top: 4px; }
-                .letter-body { margin: 28px 0; font-size: 14px; line-height: 1.6; color: #2b2b2b; }
+                .letter-body { 
+                    margin: 28px 0; 
+                    font-size: 14px; 
+                    line-height: 1.6; 
+                    color: #2b2b2b;
+                    flex: 1;
+                }
                 .optional-field { margin: 12px 0; padding: 8px 0; border-bottom: 1px dashed #e0e0e0; }
                 .optional-field strong { color: #1f3d2b; }
-                .letter-footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #e0e0e0; font-size: 10px; color: #6f7b74; text-align: center; }
-                @media print { body { margin: 0; padding: 0; } .letterhead-container { padding: 0.5cm; } .watermark-print { opacity: 0.08; } .text-watermark-print { opacity: 0.15 !important; } }
+                .letter-footer { 
+                    margin-top: 32px; 
+                    padding-top: 16px; 
+                    border-top: 1px solid #e0e0e0; 
+                    font-size: 10px; 
+                    color: #6f7b74; 
+                    text-align: center;
+                    width: 100%;
+                }
+                @media print { 
+                    body { margin: 0; padding: 0; min-height: 100vh; display: block; }
+                    .letterhead-container { min-height: auto; padding: 0.5cm; }
+                    .watermark-print { opacity: 0.08; } 
+                    .text-watermark-print { opacity: 0.15 !important; } 
+                }
             </style>
             </head>
             <body>
@@ -805,7 +875,8 @@
                     <div class="header-right">
                         <div>${escapeHtml(addr1)}<br>${escapeHtml(addr2)}<br>${escapeHtml(city)}</div>
                         <div class="gst-pan">GSTIN: ${escapeHtml(gst)} | PAN: ${escapeHtml(panNum)}</div>
-                        <div><i class="fas fa-phone"></i> ${escapeHtml(phoneVal)} &nbsp;|&nbsp; <i class="fas fa-envelope"></i> ${escapeHtml(emailVal)}<br><i class="fas fa-globe"></i> ${escapeHtml(websiteVal)}</div>
+                        <div><i class="fas fa-phone"></i> ${escapeHtml(phoneVal)} &nbsp;|&nbsp; <i class="fas fa-envelope"></i> ${escapeHtml(emailVal)}</div>
+                        ${showWebsite && websiteVal ? `<div><i class="fas fa-globe"></i> ${escapeHtml(websiteVal)}</div>` : ''}
                     </div>
                 </div>
                 <div class="letter-body">
@@ -855,6 +926,7 @@
         // Initialization
         if(!loadFromStorage()) {
             for(let key of Object.keys(fields)) if(fields[key] && defaultData[key] !== undefined) fields[key].value = defaultData[key];
+            document.getElementById('showWebsite').checked = true;
             document.getElementById('showSubject').checked = true;
             document.getElementById('showReference').checked = true;
             document.getElementById('showAttachments').checked = false;
