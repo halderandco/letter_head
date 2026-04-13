@@ -515,7 +515,7 @@
 <div class="container">
     <div class="letterhead-header-bar no-print">
         <div class="logo-area">
-            <div class="circular-logo" style="background:white; display:flex; align-items:center; justify-content:center;">HC</div>
+            <img src="34391.png" alt="Halder & Co. Logo" class="circular-logo" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2248%22%20fill%3D%22%231f3d2b%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2265%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%20font-family%3D%22Arial%22%3EHC%3C%2Ftext%3E%3C%2Fsvg%3E'">
             <div class="company-details">
                 <h1>HALDER & CO.</h1>
                 <p>Premium Letterhead Studio | Corporate Stationery</p>
@@ -601,7 +601,7 @@
             <div class="letterhead-preview" id="letterheadPreviewContainer">
                 <div class="letterhead-header">
                     <div class="letterhead-logo-area">
-                        <img id="previewLogoImg" class="preview-logo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%231f3d2b'/%3E%3Ctext x='50' y='67' text-anchor='middle' fill='white' font-size='42' font-family='Arial'%3EHC%3C/text%3E%3C/svg%3E" alt="Logo">
+                        <img id="previewLogoImg" class="preview-logo" src="34391.png" alt="Logo">
                         <div>
                             <div class="letterhead-title" id="previewCompanyName">Halder & Co.</div>
                             <div class="letterhead-tagline" id="previewTagline">Premium Interior Materials Tailored to Your Needs</div>
@@ -613,7 +613,7 @@
                         <p id="previewCityPin">Kolkata – 700046, West Bengal, India.</p>
                         <p class="gst-pan-line" id="previewGstPan">GSTIN: 19AASFH5716J1ZS | PAN: AASFH5716J</p>
                         <p><i class="fas fa-phone"></i> <span id="previewPhone">+91 98317 76985</span> &nbsp;|&nbsp; <i class="fas fa-envelope"></i> <span id="previewEmail">halderandco.traders@gmail.com</span></p>
-                        <p id="previewWebsite" style="font-size:11px;">www.halderco.com</p>
+                        <p id="previewWebsite" style="font-size:11px;">https://halderandco.github.io/</p>
                     </div>
                 </div>
                 <div class="letterhead-body">
@@ -697,7 +697,7 @@
         let defaultData = {
             companyName: "Halder & Co.",
             tagline: "Premium Interior Materials Tailored to Your Needs",
-            logoUrl: "",
+            logoUrl: "34391.png",
             addressLine1: "73/C Topsia Road South",
             addressLine2: "Gobinda Khatick Road",
             cityStatePin: "Kolkata – 700046, West Bengal, India.",
@@ -705,7 +705,7 @@
             pan: "AASFH5716J",
             phone: "+91 98317 76985",
             email: "halderandco.traders@gmail.com",
-            website: "www.halderco.com",
+            website: "https://halderandco.github.io/",
             letterBody: "To,\nThe Concern,\n\nSubject: Official Communication\n\nDear Sir/Madam,\n\nThis is a system-generated letterhead for all official correspondence. Please find the details above. We look forward to a continued professional relationship.\n\nYours faithfully,\nHalder & Co.",
             footerNote: "Regd. Office: 73/C Topsia Road South, Kolkata – 700046"
         };
@@ -760,10 +760,10 @@
             if(logoUrlVal) {
                 preview.logoImg.src = logoUrlVal;
                 preview.logoImg.onerror = function() {
-                    this.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%231f3d2b'/%3E%3Ctext x='50' y='67' text-anchor='middle' fill='white' font-size='42' font-family='Arial'%3EHC%3C/text%3E%3C/svg%3E";
+                    this.src = "34391.png";
                 };
             } else {
-                preview.logoImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%231f3d2b'/%3E%3Ctext x='50' y='67' text-anchor='middle' fill='white' font-size='42' font-family='Arial'%3EHC%3C/text%3E%3C/svg%3E";
+                preview.logoImg.src = "34391.png";
             }
             saveToStorage(false);
         }
@@ -772,7 +772,7 @@
             if(confirm('Reset all letterhead data to default?')) {
                 for(let key of Object.keys(fields)) {
                     if(fields[key] && defaultData[key] !== undefined) fields[key].value = defaultData[key];
-                    else if(fields[key] && key === 'logoUrl') fields[key].value = '';
+                    else if(fields[key] && key === 'logoUrl') fields[key].value = defaultData.logoUrl;
                 }
                 updatePreview();
                 showToast('Letterhead reset to defaults', 'info');
@@ -816,7 +816,7 @@
         function getPrintHtml() {
             const clone = document.getElementById('previewPanel').cloneNode(true);
             const logoInClone = clone.querySelector('#previewLogoImg');
-            if(logoInClone && fields.logoUrl.value.trim()) logoInClone.src = fields.logoUrl.value.trim();
+            if(logoInClone) logoInClone.src = fields.logoUrl.value.trim() || "34391.png";
             return '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Halder & Co. Letterhead</title><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>body { margin: 0; padding: 20mm; font-family: "Source Sans 3", sans-serif; background: white; } .preview-panel { box-shadow: none; padding: 0; } .watermark-light { opacity: 0.05; } .no-print { display: none; } .letterhead-header { margin-bottom: 30px; }</style></head><body>'+clone.outerHTML+'</body></html>';
         }
         
@@ -884,7 +884,7 @@
         if(!loadFromStorage()) {
             for(let key of Object.keys(fields)) {
                 if(fields[key] && defaultData[key] !== undefined) fields[key].value = defaultData[key];
-                else if(fields[key] && key === 'logoUrl') fields[key].value = '';
+                else if(fields[key] && key === 'logoUrl') fields[key].value = defaultData.logoUrl;
             }
         }
         updatePreview();
