@@ -173,6 +173,7 @@
         .rich-text-toolbar {
             display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;
             padding: 8px 10px; background: #f8f9fa; border-radius: 12px; border: 1px solid var(--border);
+            align-items: center;
         }
         .toolbar-btn {
             background: white; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px;
@@ -181,7 +182,15 @@
         }
         .toolbar-btn i { font-size: 14px; }
         .toolbar-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
-        .toolbar-divider { width: 1px; background: var(--border); margin: 0 4px; }
+        .toolbar-select {
+            padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border);
+            background: white; font-family: inherit; font-size: 13px; cursor: pointer;
+        }
+        .toolbar-color {
+            width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+            cursor: pointer; background: white; padding: 2px;
+        }
+        .toolbar-divider { width: 1px; background: var(--border); margin: 0 4px; height: 28px; }
         .char-counter { font-size: 11px; color: var(--muted); text-align: right; margin-top: 6px; }
 
         /* Modal & Toast */
@@ -299,7 +308,7 @@
                 </div>
             </div>
 
-            <!-- Enhanced Letter Body -->
+            <!-- Enhanced Letter Body with Advanced Formatting -->
             <div class="form-group">
                 <label>Letter Body / Message Content <span style="font-weight:normal; font-size:12px;">(Rich text supported)</span></label>
                 <div class="rich-text-toolbar">
@@ -316,6 +325,17 @@
                     <button type="button" class="toolbar-btn" data-format="alignLeft" title="Align Left"><i class="fas fa-align-left"></i></button>
                     <button type="button" class="toolbar-btn" data-format="alignCenter" title="Align Center"><i class="fas fa-align-center"></i></button>
                     <button type="button" class="toolbar-btn" data-format="alignRight" title="Align Right"><i class="fas fa-align-right"></i></button>
+                    <span class="toolbar-divider"></span>
+                    <!-- New advanced formatting controls -->
+                    <select id="fontSizeSelect" class="toolbar-select" title="Font Size">
+                        <option value="12px">12px</option>
+                        <option value="14px" selected>14px</option>
+                        <option value="16px">16px</option>
+                        <option value="18px">18px</option>
+                        <option value="24px">24px</option>
+                    </select>
+                    <input type="color" id="textColorPicker" class="toolbar-color" title="Text Color" value="#000000">
+                    <input type="color" id="bgColorPicker" class="toolbar-color" title="Background Color" value="#ffff00">
                     <span class="toolbar-divider"></span>
                     <button type="button" class="toolbar-btn" id="clearFormattingBtn" title="Clear Formatting"><i class="fas fa-eraser"></i></button>
                 </div>
@@ -457,7 +477,7 @@
             optionalFieldsContainer: document.getElementById('previewOptionalFields')
         };
         
-        // Default data
+        // Default data - website already uses https://halderandco.github.io
         const defaultData = {
             companyName: "Halder & Co.",
             tagline: "Premium Interior Materials Tailored to Your Needs",
@@ -649,7 +669,7 @@
             setTimeout(() => { toastDiv.classList.remove('show'); setTimeout(()=>toastDiv.remove(), 300); }, 3000);
         }
         
-        // Rich text helpers
+        // Rich text helpers (existing)
         function wrapText(tag, openTag, closeTag) {
             const textarea = fields.letterBody;
             const start = textarea.selectionStart, end = textarea.selectionEnd;
@@ -694,13 +714,60 @@
             updatePreview();
             showToast('Formatting cleared', 'info');
         }
+        
+        // New advanced formatting functions
+        function applyFontSize(sizePx) {
+            const textarea = fields.letterBody;
+            const start = textarea.selectionStart, end = textarea.selectionEnd;
+            const selected = textarea.value.substring(start, end);
+            if (!selected) {
+                showToast('Select text to change font size', 'info');
+                return;
+            }
+            const wrapped = `<span style="font-size: ${sizePx};">${selected}</span>`;
+            textarea.value = textarea.value.substring(0, start) + wrapped + textarea.value.substring(end);
+            textarea.setSelectionRange(start + wrapped.length - selected.length, start + wrapped.length);
+            textarea.focus();
+            updatePreview();
+        }
+        
+        function applyTextColor(color) {
+            const textarea = fields.letterBody;
+            const start = textarea.selectionStart, end = textarea.selectionEnd;
+            const selected = textarea.value.substring(start, end);
+            if (!selected) {
+                showToast('Select text to change color', 'info');
+                return;
+            }
+            const wrapped = `<span style="color: ${color};">${selected}</span>`;
+            textarea.value = textarea.value.substring(0, start) + wrapped + textarea.value.substring(end);
+            textarea.setSelectionRange(start + wrapped.length - selected.length, start + wrapped.length);
+            textarea.focus();
+            updatePreview();
+        }
+        
+        function applyBackgroundColor(color) {
+            const textarea = fields.letterBody;
+            const start = textarea.selectionStart, end = textarea.selectionEnd;
+            const selected = textarea.value.substring(start, end);
+            if (!selected) {
+                showToast('Select text to highlight', 'info');
+                return;
+            }
+            const wrapped = `<span style="background-color: ${color};">${selected}</span>`;
+            textarea.value = textarea.value.substring(0, start) + wrapped + textarea.value.substring(end);
+            textarea.setSelectionRange(start + wrapped.length - selected.length, start + wrapped.length);
+            textarea.focus();
+            updatePreview();
+        }
+        
         function updateCharCounter() {
             const len = fields.letterBody.value.length;
             const counter = document.getElementById('letterBodyCounter');
             if(counter) counter.innerText = `${len} characters${len > 2000 ? ' (long content)' : ''}`;
         }
         
-        // Attach toolbar
+        // Attach toolbar events (existing + new)
         document.querySelectorAll('.toolbar-btn[data-format]').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -719,7 +786,24 @@
         });
         document.getElementById('clearFormattingBtn')?.addEventListener('click', (e) => { e.preventDefault(); clearFormatting(); });
         
-        // Event listeners
+        // New formatting controls
+        const fontSizeSelect = document.getElementById('fontSizeSelect');
+        fontSizeSelect.addEventListener('change', (e) => {
+            applyFontSize(e.target.value);
+            fontSizeSelect.value = '14px'; // reset to default after applying
+        });
+        
+        const textColorPicker = document.getElementById('textColorPicker');
+        textColorPicker.addEventListener('input', (e) => {
+            applyTextColor(e.target.value);
+        });
+        
+        const bgColorPicker = document.getElementById('bgColorPicker');
+        bgColorPicker.addEventListener('input', (e) => {
+            applyBackgroundColor(e.target.value);
+        });
+        
+        // Event listeners for fields
         for(let key of Object.keys(fields)) if(fields[key]) fields[key].addEventListener('input', updatePreview);
         document.getElementById('updateLetterhead').addEventListener('click', updatePreview);
         document.getElementById('updateBtn').addEventListener('click', updatePreview);
@@ -736,7 +820,7 @@
             document.getElementById(id).addEventListener('input', updatePreview);
         });
         
-        // Export modal logic
+        // Export modal logic (identical to before)
         const exportModal = document.getElementById('exportModal');
         const exportBtn = document.getElementById('exportLetterhead');
         let selectedType = null;
@@ -752,7 +836,7 @@
             };
         });
         
-        // Updated getPrintHtml with optional website and footer at bottom using flex min-height
+        // Updated getPrintHtml with website already correct
         function getPrintHtml() {
             const company = fields.companyName.value.trim() || defaultData.companyName;
             const tagline = fields.tagline.value.trim() || defaultData.tagline;
